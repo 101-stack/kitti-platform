@@ -1,0 +1,190 @@
+2026-04-19 17:02:55 [error]: Redis error: . Using in-memory fallback.
+2026-04-19 17:02:55 [error]: Redis error: . Using in-memory fallback.
+2026-04-19 17:02:55 [error]: Redis error: . Using in-memory fallback.
+2026-04-19 17:02:55 [error]: Redis error: . Using in-memory fallback.
+2026-04-19 17:26:20 [error]: Redis error: . Using in-memory fallback.
+2026-04-19 17:26:20 [error]: Redis error: . Using in-memory fallback.
+2026-04-19 17:26:20 [error]: Redis error: . Using in-memory fallback.
+2026-04-19 17:26:20 [error]: Redis error: . Using in-memory fallback.
+2026-04-19 17:28:11 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-19 18:52:45 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 22:08:56 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 22:08:56 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 22:08:57 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 22:08:57 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 22:35:34 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 22:35:35 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 22:35:35 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 22:35:35 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 22:47:15 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 22:47:16 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 22:47:16 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 22:47:16 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 22:55:04 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 22:57:51 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:05:44 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:09:37 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:11:48 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:11:48 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:11:48 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:11:48 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:11:48 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:11:57 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:11:57 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:11:57 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:11:58 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:11:58 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:12:10 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:12:10 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:12:10 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:12:11 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:12:11 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:12:36 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:12:36 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:12:43 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:12:43 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:13:01 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:13:01 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:13:01 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:13:02 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:13:02 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:13:06 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:13:06 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:13:08 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:13:08 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:13:29 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:13:29 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:17:53 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:19:45 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:20:26 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:22:20 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:22:20 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:22:20 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:22:21 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:22:21 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:22:22 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:22:56 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:22:56 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:22:56 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:22:56 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:22:56 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:22:57 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:23:48 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:23:49 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:23:49 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:23:49 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:23:49 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:23:50 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:24:07 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:24:07 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:24:08 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:24:08 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:24:08 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:24:09 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:24:30 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:24:30 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:24:30 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:24:31 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:24:31 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:24:33 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:25:19 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:27:12 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:27:12 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:27:12 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:27:12 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:27:13 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:27:13 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:27:23 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:27:24 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:27:24 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:27:24 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:27:25 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:27:25 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:28:50 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:29:47 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:30:11 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:30:11 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:30:11 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:30:11 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:30:11 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:30:11 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:30:14 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:30:37 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:30:45 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:30:45 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:30:48 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:30:48 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:31:25 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:31:25 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:31:25 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:31:25 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:32:30 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:32:30 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:32:31 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:32:31 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:32:36 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:32:36 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:32:37 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:32:37 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:32:37 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:32:37 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:32:37 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:32:37 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:32:37 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:32:37 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:40:40 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:40:40 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:40:46 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:40:46 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:40:59 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:40:59 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:41:00 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:41:00 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:41:00 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:41:00 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:41:00 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:41:00 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:41:01 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:41:01 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:41:01 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:41:01 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:41:01 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:41:01 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:41:01 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:41:01 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:41:01 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:41:01 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:41:01 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:41:01 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-27 07:45:33 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 07:45:33 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 07:45:33 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 07:45:34 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 08:16:33 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 08:16:33 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 08:16:33 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 08:16:33 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 08:46:05 [error]: FastAPI error: 
+2026-04-27 08:46:05 [error]: create_room error: FastAPI error: 
+2026-04-27 09:34:58 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 09:34:58 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 09:34:58 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 09:34:58 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 09:35:10 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 09:35:11 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 09:35:11 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 09:35:11 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 09:37:02 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 09:37:02 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 09:37:02 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 09:37:02 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 10:00:30 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 10:00:30 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 10:00:31 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 10:00:31 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 10:02:12 [error]: FastAPI error: Insufficient coins
+2026-04-27 10:02:12 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-27 10:02:17 [error]: FastAPI error: Insufficient coins
+2026-04-27 10:02:17 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-27 10:03:41 [error]: FastAPI error: Insufficient coins
+2026-04-27 10:03:41 [error]: create_room error: FastAPI error: Insufficient coins

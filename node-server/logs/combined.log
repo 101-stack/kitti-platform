@@ -1,0 +1,498 @@
+2026-04-19 17:02:55 [info]: 🎴 Kitti Node Server running on port 4000
+2026-04-19 17:02:55 [info]: Environment: development
+2026-04-19 17:02:55 [error]: Redis error: . Using in-memory fallback.
+2026-04-19 17:02:55 [warn]: Redis reconnecting... attempt 1, delay: 50ms
+2026-04-19 17:02:55 [error]: Redis error: . Using in-memory fallback.
+2026-04-19 17:02:55 [warn]: Redis reconnecting... attempt 2, delay: 100ms
+2026-04-19 17:02:55 [error]: Redis error: . Using in-memory fallback.
+2026-04-19 17:02:55 [warn]: Redis reconnecting... attempt 3, delay: 150ms
+2026-04-19 17:02:55 [error]: Redis error: . Using in-memory fallback.
+2026-04-19 17:26:20 [info]: 🎴 Kitti Node Server running on port 4000
+2026-04-19 17:26:20 [info]: Environment: development
+2026-04-19 17:26:20 [error]: Redis error: . Using in-memory fallback.
+2026-04-19 17:26:20 [warn]: Redis reconnecting... attempt 1, delay: 50ms
+2026-04-19 17:26:20 [error]: Redis error: . Using in-memory fallback.
+2026-04-19 17:26:20 [warn]: Redis reconnecting... attempt 2, delay: 100ms
+2026-04-19 17:26:20 [error]: Redis error: . Using in-memory fallback.
+2026-04-19 17:26:20 [warn]: Redis reconnecting... attempt 3, delay: 150ms
+2026-04-19 17:26:20 [error]: Redis error: . Using in-memory fallback.
+2026-04-19 17:28:11 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-19 17:28:11 [info]: Player connected: abc (2dca45be-401e-4081-954b-8cdefb69c689) | Socket: hcg5NKF3AASVdz3WAAAC
+2026-04-19 17:28:18 [info]: Room created: 1EFEAFDB by abc
+2026-04-19 17:28:19 [info]: Room created: 18E6002F by abc
+2026-04-19 17:28:20 [info]: Room created: BB4D877D by abc
+2026-04-19 17:28:28 [info]: Room 18E6002F deleted (empty)
+2026-04-19 17:28:47 [info]: Room created: 5381475C by abc
+2026-04-19 17:29:17 [info]: Room 5381475C deleted (empty)
+2026-04-19 17:29:28 [info]: Player disconnected: abc | Reason: transport close
+2026-04-19 18:52:45 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-19 18:52:45 [info]: Player connected: Tester (82458033-2c76-44ee-aafd-1938e6fe5b24) | Socket: GFDmTIwwrC_eZyw3AAAF
+2026-04-19 18:52:55 [info]: Room created: 6DFCC328 by Tester
+2026-04-26 22:08:56 [info]: 🎴 Kitti Node Server running on port 4000
+2026-04-26 22:08:56 [info]: Environment: development
+2026-04-26 22:08:56 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 22:08:56 [warn]: Redis reconnecting... attempt 1, delay: 50ms
+2026-04-26 22:08:56 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 22:08:56 [warn]: Redis reconnecting... attempt 2, delay: 100ms
+2026-04-26 22:08:57 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 22:08:57 [warn]: Redis reconnecting... attempt 3, delay: 150ms
+2026-04-26 22:08:57 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 22:35:34 [info]: 🎴 Kitti Node Server running on port 4000
+2026-04-26 22:35:34 [info]: Environment: development
+2026-04-26 22:35:34 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 22:35:34 [warn]: Redis reconnecting... attempt 1, delay: 50ms
+2026-04-26 22:35:35 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 22:35:35 [warn]: Redis reconnecting... attempt 2, delay: 100ms
+2026-04-26 22:35:35 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 22:35:35 [warn]: Redis reconnecting... attempt 3, delay: 150ms
+2026-04-26 22:35:35 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 22:47:15 [info]: 🎴 Kitti Node Server running on port 4000
+2026-04-26 22:47:15 [info]: Environment: development
+2026-04-26 22:47:15 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 22:47:15 [warn]: Redis reconnecting... attempt 1, delay: 50ms
+2026-04-26 22:47:16 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 22:47:16 [warn]: Redis reconnecting... attempt 2, delay: 100ms
+2026-04-26 22:47:16 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 22:47:16 [warn]: Redis reconnecting... attempt 3, delay: 150ms
+2026-04-26 22:47:16 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 22:55:04 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 22:55:04 [info]: Player connected: abc (2dca45be-401e-4081-954b-8cdefb69c689) | Socket: XbzxIcuwDDz58la2AAAC
+2026-04-26 22:55:14 [info]: Room created: 4D34F32C by abc
+2026-04-26 22:55:16 [info]: Room created: DD48D4F7 by abc
+2026-04-26 22:55:26 [info]: Room DD48D4F7 deleted (empty)
+2026-04-26 22:55:28 [info]: Room created: F95EBE1E by abc
+2026-04-26 22:55:39 [info]: Room F95EBE1E deleted (empty)
+2026-04-26 22:55:41 [info]: Room created: D57167E8 by abc
+2026-04-26 22:55:46 [info]: Room D57167E8 deleted (empty)
+2026-04-26 22:57:50 [info]: Player disconnecting: abc | Reason: transport close
+2026-04-26 22:57:50 [info]: Player disconnected: abc | Reason: transport close
+2026-04-26 22:57:51 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 22:57:51 [info]: Player connected: abc (2dca45be-401e-4081-954b-8cdefb69c689) | Socket: BVKS6R8UqwTmNloqAAAE
+2026-04-26 22:59:56 [info]: Player disconnecting: abc | Reason: transport close
+2026-04-26 22:59:56 [info]: Player disconnected: abc | Reason: transport close
+2026-04-26 23:05:44 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:05:44 [info]: Player connected: asd (dcca477f-15ff-4d76-8762-a201e627481a) | Socket: 3Tc2BboX4VdHI8nLAAAH
+2026-04-26 23:05:52 [info]: Room created: 396F9EDC by asd
+2026-04-26 23:05:53 [info]: Room created: C733A46E by asd
+2026-04-26 23:06:02 [info]: Room C733A46E deleted (empty)
+2026-04-26 23:06:07 [info]: Room created: A3657F82 by asd
+2026-04-26 23:06:32 [info]: Room A3657F82 deleted (empty)
+2026-04-26 23:08:27 [info]: Room created: DC38FD93 by asd
+2026-04-26 23:08:36 [info]: Room DC38FD93 deleted (empty)
+2026-04-26 23:09:27 [info]: Player disconnecting: asd | Reason: transport close
+2026-04-26 23:09:27 [info]: Player disconnected: asd | Reason: transport close
+2026-04-26 23:09:37 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:09:37 [info]: Player connected: abc (2dca45be-401e-4081-954b-8cdefb69c689) | Socket: qb3wkoS3sfvfReNiAAAK
+2026-04-26 23:09:40 [info]: Room created: 86CF2D48 by abc
+2026-04-26 23:09:44 [info]: Room 86CF2D48 deleted (empty)
+2026-04-26 23:11:48 [info]: 🎴 Kitti Node Server running on port 4000
+2026-04-26 23:11:48 [info]: Environment: development
+2026-04-26 23:11:48 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:11:48 [warn]: Redis reconnecting... attempt 1, delay: 50ms
+2026-04-26 23:11:48 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:11:48 [warn]: Redis reconnecting... attempt 2, delay: 100ms
+2026-04-26 23:11:48 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:11:48 [info]: Player connected: abc (2dca45be-401e-4081-954b-8cdefb69c689) | Socket: TQwAsXLLyGATE_7JAAAB
+2026-04-26 23:11:48 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:11:48 [warn]: Redis reconnecting... attempt 3, delay: 150ms
+2026-04-26 23:11:48 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:11:57 [info]: 🎴 Kitti Node Server running on port 4000
+2026-04-26 23:11:57 [info]: Environment: development
+2026-04-26 23:11:57 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:11:57 [warn]: Redis reconnecting... attempt 1, delay: 50ms
+2026-04-26 23:11:57 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:11:57 [warn]: Redis reconnecting... attempt 2, delay: 100ms
+2026-04-26 23:11:57 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:11:57 [info]: Player connected: abc (2dca45be-401e-4081-954b-8cdefb69c689) | Socket: 7OYWwuLI4fOxR12MAAAB
+2026-04-26 23:11:58 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:11:58 [warn]: Redis reconnecting... attempt 3, delay: 150ms
+2026-04-26 23:11:58 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:12:10 [info]: 🎴 Kitti Node Server running on port 4000
+2026-04-26 23:12:10 [info]: Environment: development
+2026-04-26 23:12:10 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:12:10 [warn]: Redis reconnecting... attempt 1, delay: 50ms
+2026-04-26 23:12:10 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:12:10 [warn]: Redis reconnecting... attempt 2, delay: 100ms
+2026-04-26 23:12:10 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:12:10 [warn]: Redis reconnecting... attempt 3, delay: 150ms
+2026-04-26 23:12:11 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:12:11 [info]: Player connected: abc (2dca45be-401e-4081-954b-8cdefb69c689) | Socket: -SscR-WAX99Ig9n8AAAB
+2026-04-26 23:12:11 [info]: Room created: ED59A653 by abc
+2026-04-26 23:12:11 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:12:32 [info]: Room ED59A653 deleted (empty)
+2026-04-26 23:12:36 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:12:36 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:12:43 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:12:43 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:13:01 [info]: 🎴 Kitti Node Server running on port 4000
+2026-04-26 23:13:01 [info]: Environment: development
+2026-04-26 23:13:01 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:13:01 [info]: Player connected: abc (2dca45be-401e-4081-954b-8cdefb69c689) | Socket: EmfSCZuzJDSHgb8BAAAB
+2026-04-26 23:13:01 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:13:01 [warn]: Redis reconnecting... attempt 1, delay: 50ms
+2026-04-26 23:13:01 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:13:01 [warn]: Redis reconnecting... attempt 2, delay: 100ms
+2026-04-26 23:13:02 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:13:02 [warn]: Redis reconnecting... attempt 3, delay: 150ms
+2026-04-26 23:13:02 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:13:06 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:13:06 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:13:08 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:13:08 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:13:29 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:13:29 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:17:50 [info]: Player disconnecting: abc | Reason: transport close
+2026-04-26 23:17:50 [info]: Player disconnected: abc | Reason: transport close
+2026-04-26 23:17:53 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:17:53 [info]: Player connected: dfc (e32a8acc-e32e-4621-9850-f1e9f23396aa) | Socket: 7hMZY2lWqvXcY3olAAAD
+2026-04-26 23:18:03 [info]: Room created: 5E70CFBE by dfc
+2026-04-26 23:18:25 [info]: Player disconnecting: dfc | Reason: transport close
+2026-04-26 23:18:25 [info]: Player disconnected: dfc | Reason: transport close
+2026-04-26 23:19:45 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:19:45 [info]: Player connected: rtrr (a736e45c-40a6-4ce7-a0a1-f0125abf397d) | Socket: TewNVH3QfHZFgSPnAAAF
+2026-04-26 23:20:26 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:20:26 [info]: Player connected: 456477 (27f93073-36eb-48a8-9575-e5d3bbfd32ba) | Socket: 16CcAiT5aOeqG_VoAAAI
+2026-04-26 23:20:36 [info]: Room created: 900A612F by 456477
+2026-04-26 23:21:06 [info]: Room 900A612F deleted (empty)
+2026-04-26 23:22:20 [info]: 🎴 Kitti Node Server running on port 4000
+2026-04-26 23:22:20 [info]: Environment: development
+2026-04-26 23:22:20 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:22:20 [warn]: Redis reconnecting... attempt 1, delay: 50ms
+2026-04-26 23:22:20 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:22:20 [warn]: Redis reconnecting... attempt 2, delay: 100ms
+2026-04-26 23:22:20 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:22:20 [warn]: Redis reconnecting... attempt 3, delay: 150ms
+2026-04-26 23:22:21 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:22:21 [info]: Player connected: rtrr (a736e45c-40a6-4ce7-a0a1-f0125abf397d) | Socket: O_ymFLzkP56WSgTaAAAB
+2026-04-26 23:22:21 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:22:22 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:22:22 [info]: Player connected: 456477 (27f93073-36eb-48a8-9575-e5d3bbfd32ba) | Socket: GQDioTYGv1UGPrPVAAAD
+2026-04-26 23:22:56 [info]: 🎴 Kitti Node Server running on port 4000
+2026-04-26 23:22:56 [info]: Environment: development
+2026-04-26 23:22:56 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:22:56 [warn]: Redis reconnecting... attempt 1, delay: 50ms
+2026-04-26 23:22:56 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:22:56 [warn]: Redis reconnecting... attempt 2, delay: 100ms
+2026-04-26 23:22:56 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:22:56 [info]: Player connected: 456477 (27f93073-36eb-48a8-9575-e5d3bbfd32ba) | Socket: j3cYK7LIdh1OEHPMAAAB
+2026-04-26 23:22:56 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:22:56 [warn]: Redis reconnecting... attempt 3, delay: 150ms
+2026-04-26 23:22:56 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:22:57 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:22:57 [info]: Player connected: rtrr (a736e45c-40a6-4ce7-a0a1-f0125abf397d) | Socket: Vek8QEsBpwLZUCDXAAAD
+2026-04-26 23:23:30 [info]: Room created: 01F5BAE2 by 456477
+2026-04-26 23:23:36 [info]: Room 01F5BAE2 deleted (empty)
+2026-04-26 23:23:48 [info]: 🎴 Kitti Node Server running on port 4000
+2026-04-26 23:23:48 [info]: Environment: development
+2026-04-26 23:23:48 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:23:48 [warn]: Redis reconnecting... attempt 1, delay: 50ms
+2026-04-26 23:23:49 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:23:49 [warn]: Redis reconnecting... attempt 2, delay: 100ms
+2026-04-26 23:23:49 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:23:49 [warn]: Redis reconnecting... attempt 3, delay: 150ms
+2026-04-26 23:23:49 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:23:49 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:23:49 [info]: Player connected: 456477 (27f93073-36eb-48a8-9575-e5d3bbfd32ba) | Socket: H8ieC5Bw_e_qv-ZGAAAB
+2026-04-26 23:23:50 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:23:50 [info]: Player connected: rtrr (a736e45c-40a6-4ce7-a0a1-f0125abf397d) | Socket: OC6upGdl3KUDDYBiAAAD
+2026-04-26 23:24:07 [info]: 🎴 Kitti Node Server running on port 4000
+2026-04-26 23:24:07 [info]: Environment: development
+2026-04-26 23:24:07 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:24:07 [warn]: Redis reconnecting... attempt 1, delay: 50ms
+2026-04-26 23:24:07 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:24:07 [warn]: Redis reconnecting... attempt 2, delay: 100ms
+2026-04-26 23:24:08 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:24:08 [info]: Player connected: 456477 (27f93073-36eb-48a8-9575-e5d3bbfd32ba) | Socket: hxSkqtpel3npHdj-AAAB
+2026-04-26 23:24:08 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:24:08 [warn]: Redis reconnecting... attempt 3, delay: 150ms
+2026-04-26 23:24:08 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:24:09 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:24:09 [info]: Player connected: rtrr (a736e45c-40a6-4ce7-a0a1-f0125abf397d) | Socket: EVfa0zuk2CIgwf6VAAAD
+2026-04-26 23:24:30 [info]: 🎴 Kitti Node Server running on port 4000
+2026-04-26 23:24:30 [info]: Environment: development
+2026-04-26 23:24:30 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:24:30 [warn]: Redis reconnecting... attempt 1, delay: 50ms
+2026-04-26 23:24:30 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:24:30 [warn]: Redis reconnecting... attempt 2, delay: 100ms
+2026-04-26 23:24:30 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:24:30 [warn]: Redis reconnecting... attempt 3, delay: 150ms
+2026-04-26 23:24:31 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:24:31 [info]: Player connected: rtrr (a736e45c-40a6-4ce7-a0a1-f0125abf397d) | Socket: t9bvJ4ABbJPWgBQgAAAB
+2026-04-26 23:24:31 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:24:33 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:24:33 [info]: Player connected: 456477 (27f93073-36eb-48a8-9575-e5d3bbfd32ba) | Socket: zRjGoETzZepVPRkBAAAD
+2026-04-26 23:25:07 [info]: Room created: 22A65E74 by 456477
+2026-04-26 23:25:18 [info]: Player disconnecting: 456477 | Reason: transport close
+2026-04-26 23:25:18 [info]: Player disconnected: 456477 | Reason: transport close
+2026-04-26 23:25:19 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:25:19 [info]: Player connected: 456477 (27f93073-36eb-48a8-9575-e5d3bbfd32ba) | Socket: _oeKrosm2jG6GLAaAAAF
+2026-04-26 23:25:27 [info]: Room created: 966071FC by 456477
+2026-04-26 23:25:39 [info]: Room 966071FC deleted (empty)
+2026-04-26 23:27:12 [info]: 🎴 Kitti Node Server running on port 4000
+2026-04-26 23:27:12 [info]: Environment: development
+2026-04-26 23:27:12 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:27:12 [warn]: Redis reconnecting... attempt 1, delay: 50ms
+2026-04-26 23:27:12 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:27:12 [warn]: Redis reconnecting... attempt 2, delay: 100ms
+2026-04-26 23:27:12 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:27:12 [warn]: Redis reconnecting... attempt 3, delay: 150ms
+2026-04-26 23:27:12 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:27:13 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:27:13 [info]: Player connected: rtrr (a736e45c-40a6-4ce7-a0a1-f0125abf397d) | Socket: 2LfIKX2_2_pcD4AwAAAB
+2026-04-26 23:27:13 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:27:13 [info]: Player connected: 456477 (27f93073-36eb-48a8-9575-e5d3bbfd32ba) | Socket: P4AuMyGzCIzw3RbnAAAD
+2026-04-26 23:27:23 [info]: 🎴 Kitti Node Server running on port 4000
+2026-04-26 23:27:23 [info]: Environment: development
+2026-04-26 23:27:23 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:27:23 [warn]: Redis reconnecting... attempt 1, delay: 50ms
+2026-04-26 23:27:24 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:27:24 [warn]: Redis reconnecting... attempt 2, delay: 100ms
+2026-04-26 23:27:24 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:27:24 [warn]: Redis reconnecting... attempt 3, delay: 150ms
+2026-04-26 23:27:24 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:27:25 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:27:25 [info]: Player connected: rtrr (a736e45c-40a6-4ce7-a0a1-f0125abf397d) | Socket: EP8cv3EK8sfhGbQGAAAB
+2026-04-26 23:27:25 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:27:25 [info]: Player connected: 456477 (27f93073-36eb-48a8-9575-e5d3bbfd32ba) | Socket: fm764hWtUz67ihs0AAAD
+2026-04-26 23:28:12 [info]: Room created: 3A1DD02E by 456477
+2026-04-26 23:28:50 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:28:50 [info]: Player connected: 456477 (27f93073-36eb-48a8-9575-e5d3bbfd32ba) | Socket: aoiisezR6zvHB6kyAAAG
+2026-04-26 23:29:47 [info]: Player disconnecting: 456477 | Reason: transport close
+2026-04-26 23:29:47 [info]: Player disconnected: 456477 | Reason: transport close
+2026-04-26 23:29:47 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:29:47 [info]: Player connected: 456477 (27f93073-36eb-48a8-9575-e5d3bbfd32ba) | Socket: fRKOL_q_JminLYLaAAAI
+2026-04-26 23:29:56 [info]: Room created: C7D11758 by 456477
+2026-04-26 23:30:11 [info]: 🎴 Kitti Node Server running on port 4000
+2026-04-26 23:30:11 [info]: Environment: development
+2026-04-26 23:30:11 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:30:11 [warn]: Redis reconnecting... attempt 1, delay: 50ms
+2026-04-26 23:30:11 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:30:11 [info]: Player connected: rtrr (a736e45c-40a6-4ce7-a0a1-f0125abf397d) | Socket: DlEpQr1Hw32ICaBsAAAC
+2026-04-26 23:30:11 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:30:11 [info]: Player connected: 456477 (27f93073-36eb-48a8-9575-e5d3bbfd32ba) | Socket: 3bplvtYKMo7FiaHKAAAD
+2026-04-26 23:30:11 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:30:11 [warn]: Redis reconnecting... attempt 2, delay: 100ms
+2026-04-26 23:30:11 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:30:11 [warn]: Redis reconnecting... attempt 3, delay: 150ms
+2026-04-26 23:30:11 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:30:14 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:30:14 [info]: Player connected: 456477 (27f93073-36eb-48a8-9575-e5d3bbfd32ba) | Socket: yC2BQpgXSmwBD-ISAAAF
+2026-04-26 23:30:36 [info]: Player disconnecting: 456477 | Reason: transport close
+2026-04-26 23:30:36 [info]: Player disconnected: 456477 | Reason: transport close
+2026-04-26 23:30:37 [error]: Rate limit middleware error: redis.incr is not a function
+2026-04-26 23:30:37 [info]: Player connected: abc (2dca45be-401e-4081-954b-8cdefb69c689) | Socket: kiNT_c521fMKCy7vAAAH
+2026-04-26 23:30:45 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:30:45 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:30:48 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:30:48 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:31:25 [info]: 🎴 Kitti Node Server running on port 4000
+2026-04-26 23:31:25 [info]: Environment: development
+2026-04-26 23:31:25 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:31:25 [warn]: Redis reconnecting... attempt 1, delay: 50ms
+2026-04-26 23:31:25 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:31:25 [warn]: Redis reconnecting... attempt 2, delay: 100ms
+2026-04-26 23:31:25 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:31:25 [warn]: Redis reconnecting... attempt 3, delay: 150ms
+2026-04-26 23:31:25 [error]: Redis error: . Using in-memory fallback.
+2026-04-26 23:31:26 [info]: Player connected: rtrr (a736e45c-40a6-4ce7-a0a1-f0125abf397d) | Socket: wa15TuWi3VLaMrLaAAAB
+2026-04-26 23:31:26 [info]: Player connected: 456477 (27f93073-36eb-48a8-9575-e5d3bbfd32ba) | Socket: eM1lj2aC5zKoxVXkAAAD
+2026-04-26 23:31:26 [info]: Player connected: abc (2dca45be-401e-4081-954b-8cdefb69c689) | Socket: -LXWbaR4IVY63520AAAF
+2026-04-26 23:32:21 [info]: Player disconnecting: abc | Reason: transport close
+2026-04-26 23:32:21 [info]: Player disconnected: abc | Reason: transport close
+2026-04-26 23:32:22 [info]: Player connected: abc (2dca45be-401e-4081-954b-8cdefb69c689) | Socket: Fls-rLnJDmS78yGAAAAH
+2026-04-26 23:32:30 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:32:30 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:32:31 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:32:31 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:32:36 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:32:36 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:32:37 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:32:37 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:32:37 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:32:37 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:32:37 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:32:37 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:32:37 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:32:37 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:40:40 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:40:40 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:40:46 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:40:46 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:40:59 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:40:59 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:41:00 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:41:00 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:41:00 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:41:00 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:41:00 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:41:00 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:41:01 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:41:01 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:41:01 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:41:01 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:41:01 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:41:01 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:41:01 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:41:01 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:41:01 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:41:01 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:41:01 [error]: FastAPI error: Insufficient coins
+2026-04-26 23:41:01 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-26 23:41:15 [info]: Player disconnecting: abc | Reason: transport close
+2026-04-26 23:41:16 [info]: Player disconnected: abc | Reason: transport close
+2026-04-26 23:41:16 [info]: Player disconnecting: rtrr | Reason: transport close
+2026-04-26 23:41:16 [info]: Player disconnected: rtrr | Reason: transport close
+2026-04-26 23:41:16 [info]: Player disconnecting: 456477 | Reason: transport error
+2026-04-26 23:41:16 [info]: Player disconnected: 456477 | Reason: transport error
+2026-04-26 23:41:52 [info]: Player connected: 456477 (27f93073-36eb-48a8-9575-e5d3bbfd32ba) | Socket: -GW2jRDtX9cAXxhPAAAL
+2026-04-26 23:41:52 [info]: Player connected: rtrr (a736e45c-40a6-4ce7-a0a1-f0125abf397d) | Socket: kci2uGTGBFc_UgydAAAM
+2026-04-26 23:41:52 [info]: Player connected: abc (2dca45be-401e-4081-954b-8cdefb69c689) | Socket: uiHA8IIpwbU2xyykAAAN
+2026-04-26 23:42:01 [info]: Player disconnecting: 456477 | Reason: transport close
+2026-04-26 23:42:01 [info]: Player disconnected: 456477 | Reason: transport close
+2026-04-26 23:42:01 [info]: Player disconnecting: abc | Reason: transport close
+2026-04-26 23:42:01 [info]: Player disconnected: abc | Reason: transport close
+2026-04-26 23:42:01 [info]: Player disconnecting: rtrr | Reason: transport error
+2026-04-26 23:42:01 [info]: Player disconnected: rtrr | Reason: transport error
+2026-04-26 23:42:18 [info]: Player connected: 456477 (27f93073-36eb-48a8-9575-e5d3bbfd32ba) | Socket: _WYKHCiMMbd0dXc2AAAQ
+2026-04-26 23:42:18 [info]: Player connected: abc (2dca45be-401e-4081-954b-8cdefb69c689) | Socket: Ueky2dZ3F-SUj175AAAS
+2026-04-26 23:42:18 [info]: Player connected: rtrr (a736e45c-40a6-4ce7-a0a1-f0125abf397d) | Socket: G98G_Mk0mg-40cQEAAAT
+2026-04-26 23:42:21 [info]: Player disconnecting: abc | Reason: transport close
+2026-04-26 23:42:21 [info]: Player disconnected: abc | Reason: transport close
+2026-04-26 23:42:21 [info]: Player disconnecting: 456477 | Reason: transport close
+2026-04-26 23:42:21 [info]: Player disconnected: 456477 | Reason: transport close
+2026-04-26 23:42:21 [info]: Player disconnecting: rtrr | Reason: transport error
+2026-04-26 23:42:21 [info]: Player disconnected: rtrr | Reason: transport error
+2026-04-27 07:45:33 [info]: 🎴 Kitti Node Server running on port 4000
+2026-04-27 07:45:33 [info]: Environment: development
+2026-04-27 07:45:33 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 07:45:33 [warn]: Redis reconnecting... attempt 1, delay: 50ms
+2026-04-27 07:45:33 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 07:45:33 [warn]: Redis reconnecting... attempt 2, delay: 100ms
+2026-04-27 07:45:33 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 07:45:33 [warn]: Redis reconnecting... attempt 3, delay: 150ms
+2026-04-27 07:45:34 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 07:45:37 [info]: Player connected: rtrr (a736e45c-40a6-4ce7-a0a1-f0125abf397d) | Socket: hrB16wdUdbNfGLNmAAAD
+2026-04-27 07:45:37 [info]: Player connected: 456477 (27f93073-36eb-48a8-9575-e5d3bbfd32ba) | Socket: JkwrS-MP84Sjv-b9AAAE
+2026-04-27 07:45:37 [info]: Player connected: abc (2dca45be-401e-4081-954b-8cdefb69c689) | Socket: zoisUDiuO6M_vqDtAAAF
+2026-04-27 07:47:12 [warn]: Socket auth failed: jwt expired
+2026-04-27 07:49:33 [info]: Player connected: app (3c3c0f12-c3ef-4ca4-99e5-11a9fa4b38f2) | Socket: 4w34AIOyYLdIpTZBAAAK
+2026-04-27 07:49:55 [info]: Player connected: hjyu (7d6d4e19-4203-4b09-a108-b9232d3d7a47) | Socket: pEHDUsSJLSfuqvB4AAAN
+2026-04-27 07:53:42 [info]: Player disconnecting: app | Reason: transport close
+2026-04-27 07:53:42 [info]: Player disconnected: app | Reason: transport close
+2026-04-27 07:53:42 [info]: Player connected: app (3c3c0f12-c3ef-4ca4-99e5-11a9fa4b38f2) | Socket: 1yDH5oe9Cmd5Ub0YAAAQ
+2026-04-27 07:53:47 [info]: Player disconnecting: app | Reason: transport close
+2026-04-27 07:53:47 [info]: Player disconnected: app | Reason: transport close
+2026-04-27 07:53:47 [info]: Player connected: app (3c3c0f12-c3ef-4ca4-99e5-11a9fa4b38f2) | Socket: XB4XjuVplRXan8TPAAAS
+2026-04-27 07:53:58 [info]: Player disconnecting: app | Reason: transport close
+2026-04-27 07:53:58 [info]: Player disconnected: app | Reason: transport close
+2026-04-27 07:53:58 [info]: Player connected: app (3c3c0f12-c3ef-4ca4-99e5-11a9fa4b38f2) | Socket: GZES_o0OmSfb-dc3AAAV
+2026-04-27 07:59:37 [info]: Player disconnecting: rtrr | Reason: transport close
+2026-04-27 07:59:37 [info]: Player disconnected: rtrr | Reason: transport close
+2026-04-27 07:59:37 [info]: Player disconnecting: 456477 | Reason: transport error
+2026-04-27 07:59:37 [info]: Player disconnected: 456477 | Reason: transport error
+2026-04-27 07:59:37 [info]: Player disconnecting: abc | Reason: transport error
+2026-04-27 07:59:37 [info]: Player disconnected: abc | Reason: transport error
+2026-04-27 07:59:37 [info]: Player disconnecting: hjyu | Reason: transport error
+2026-04-27 07:59:37 [info]: Player disconnected: hjyu | Reason: transport error
+2026-04-27 07:59:37 [info]: Player disconnecting: app | Reason: transport error
+2026-04-27 07:59:37 [info]: Player disconnected: app | Reason: transport error
+2026-04-27 08:11:31 [info]: Player connected: app (3c3c0f12-c3ef-4ca4-99e5-11a9fa4b38f2) | Socket: PvVHs6XDSA_OFTE-AAAX
+2026-04-27 08:11:31 [info]: Player connected: abc (2dca45be-401e-4081-954b-8cdefb69c689) | Socket: vKYewm_q5HZY-cIbAAAc
+2026-04-27 08:11:31 [info]: Player connected: hjyu (7d6d4e19-4203-4b09-a108-b9232d3d7a47) | Socket: PuW69QbEHqnVU5WkAAAd
+2026-04-27 08:11:31 [info]: Player connected: 456477 (27f93073-36eb-48a8-9575-e5d3bbfd32ba) | Socket: MPWMz35SPV1LMTZYAAAe
+2026-04-27 08:11:31 [info]: Player connected: rtrr (a736e45c-40a6-4ce7-a0a1-f0125abf397d) | Socket: k7crMi9ODaWbRn9CAAAf
+2026-04-27 08:15:40 [info]: Player disconnecting: hjyu | Reason: transport close
+2026-04-27 08:15:40 [info]: Player disconnected: hjyu | Reason: transport close
+2026-04-27 08:15:42 [info]: Player connected: hjyu (7d6d4e19-4203-4b09-a108-b9232d3d7a47) | Socket: Ain-hQlcqrgxubSwAAAi
+2026-04-27 08:16:33 [info]: 🎴 Kitti Node Server running on port 4000
+2026-04-27 08:16:33 [info]: Environment: development
+2026-04-27 08:16:33 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 08:16:33 [warn]: Redis reconnecting... attempt 1, delay: 50ms
+2026-04-27 08:16:33 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 08:16:33 [warn]: Redis reconnecting... attempt 2, delay: 100ms
+2026-04-27 08:16:33 [info]: Player connected: app (3c3c0f12-c3ef-4ca4-99e5-11a9fa4b38f2) | Socket: 2p--Y96B9gv1grQ8AAAB
+2026-04-27 08:16:33 [info]: Player connected: hjyu (7d6d4e19-4203-4b09-a108-b9232d3d7a47) | Socket: XOLxfjdqCU4_NXE9AAAD
+2026-04-27 08:16:33 [info]: Player connected: 456477 (27f93073-36eb-48a8-9575-e5d3bbfd32ba) | Socket: 1Y4bjIFNu5gG5V1kAAAF
+2026-04-27 08:16:33 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 08:16:33 [warn]: Redis reconnecting... attempt 3, delay: 150ms
+2026-04-27 08:16:33 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 08:16:35 [info]: Player connected: abc (2dca45be-401e-4081-954b-8cdefb69c689) | Socket: vp1X74KutRfX4a1YAAAH
+2026-04-27 08:16:35 [info]: Player connected: rtrr (a736e45c-40a6-4ce7-a0a1-f0125abf397d) | Socket: j0P61JHFD5TZV4piAAAJ
+2026-04-27 08:20:39 [info]: Player disconnecting: rtrr | Reason: transport close
+2026-04-27 08:20:39 [info]: Player disconnected: rtrr | Reason: transport close
+2026-04-27 08:20:42 [info]: Player disconnecting: 456477 | Reason: transport close
+2026-04-27 08:20:42 [info]: Player disconnected: 456477 | Reason: transport close
+2026-04-27 08:20:43 [info]: Player disconnecting: abc | Reason: transport close
+2026-04-27 08:20:43 [info]: Player disconnected: abc | Reason: transport close
+2026-04-27 08:20:48 [info]: Player disconnecting: hjyu | Reason: transport close
+2026-04-27 08:20:48 [info]: Player disconnected: hjyu | Reason: transport close
+2026-04-27 08:20:49 [info]: Player connected: hjyu (7d6d4e19-4203-4b09-a108-b9232d3d7a47) | Socket: SL4rIpmLXzvUaiKoAAAL
+2026-04-27 08:21:38 [info]: Player connected: app (3c3c0f12-c3ef-4ca4-99e5-11a9fa4b38f2) | Socket: VVizcUNDqxfgNpGrAAAO
+2026-04-27 08:22:20 [info]: Player disconnecting: hjyu | Reason: transport close
+2026-04-27 08:22:20 [info]: Player disconnected: hjyu | Reason: transport close
+2026-04-27 08:22:21 [info]: Player connected: hjyu (7d6d4e19-4203-4b09-a108-b9232d3d7a47) | Socket: _iezDgEJHPxII1YNAAAR
+2026-04-27 08:29:43 [info]: Player disconnecting: app | Reason: transport close
+2026-04-27 08:29:43 [info]: Player disconnected: app | Reason: transport close
+2026-04-27 08:29:44 [info]: Player connected: app (3c3c0f12-c3ef-4ca4-99e5-11a9fa4b38f2) | Socket: 7Cn7YOJ6zBjp2v6TAAAU
+2026-04-27 08:37:08 [info]: Player disconnecting: app | Reason: transport close
+2026-04-27 08:37:08 [info]: Player disconnected: app | Reason: transport close
+2026-04-27 08:37:09 [info]: Player connected: app (3c3c0f12-c3ef-4ca4-99e5-11a9fa4b38f2) | Socket: WQtpYO8bBkHXw5mfAAAX
+2026-04-27 08:37:19 [info]: Player disconnecting: app | Reason: transport close
+2026-04-27 08:37:19 [info]: Player disconnected: app | Reason: transport close
+2026-04-27 08:46:05 [error]: FastAPI error: 
+2026-04-27 08:46:05 [error]: create_room error: FastAPI error: 
+2026-04-27 09:08:24 [warn]: Socket auth failed: jwt malformed
+2026-04-27 09:33:51 [info]: Player disconnecting: app | Reason: transport close
+2026-04-27 09:33:51 [info]: Player disconnected: app | Reason: transport close
+2026-04-27 09:34:58 [info]: 🎴 Kitti Node Server running on port 4000
+2026-04-27 09:34:58 [info]: Environment: development
+2026-04-27 09:34:58 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 09:34:58 [warn]: Redis reconnecting... attempt 1, delay: 50ms
+2026-04-27 09:34:58 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 09:34:58 [warn]: Redis reconnecting... attempt 2, delay: 100ms
+2026-04-27 09:34:58 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 09:34:58 [warn]: Redis reconnecting... attempt 3, delay: 150ms
+2026-04-27 09:34:58 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 09:34:58 [info]: Player connected: hjyu (7d6d4e19-4203-4b09-a108-b9232d3d7a47) | Socket: dROx-5fCL-R4xlQCAAAB
+2026-04-27 09:35:10 [info]: 🎴 Kitti Node Server running on port 4000
+2026-04-27 09:35:10 [info]: Environment: development
+2026-04-27 09:35:10 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 09:35:10 [warn]: Redis reconnecting... attempt 1, delay: 50ms
+2026-04-27 09:35:11 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 09:35:11 [warn]: Redis reconnecting... attempt 2, delay: 100ms
+2026-04-27 09:35:11 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 09:35:11 [warn]: Redis reconnecting... attempt 3, delay: 150ms
+2026-04-27 09:35:11 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 09:35:12 [info]: Player connected: hjyu (7d6d4e19-4203-4b09-a108-b9232d3d7a47) | Socket: vfSlGtbUUQba6TPLAAAB
+2026-04-27 09:37:02 [info]: 🎴 Kitti Node Server running on port 4000
+2026-04-27 09:37:02 [info]: Environment: development
+2026-04-27 09:37:02 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 09:37:02 [warn]: Redis reconnecting... attempt 1, delay: 50ms
+2026-04-27 09:37:02 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 09:37:02 [warn]: Redis reconnecting... attempt 2, delay: 100ms
+2026-04-27 09:37:02 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 09:37:02 [warn]: Redis reconnecting... attempt 3, delay: 150ms
+2026-04-27 09:37:02 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 09:37:03 [info]: Player connected: hjyu (7d6d4e19-4203-4b09-a108-b9232d3d7a47) | Socket: 6q4fyq_e8EQQ1m2sAAAB
+2026-04-27 10:00:30 [info]: 🎴 Kitti Node Server running on port 4000
+2026-04-27 10:00:30 [info]: Environment: development
+2026-04-27 10:00:30 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 10:00:30 [warn]: Redis reconnecting... attempt 1, delay: 50ms
+2026-04-27 10:00:30 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 10:00:30 [warn]: Redis reconnecting... attempt 2, delay: 100ms
+2026-04-27 10:00:31 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 10:00:31 [warn]: Redis reconnecting... attempt 3, delay: 150ms
+2026-04-27 10:00:31 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 10:00:33 [info]: Player connected: hjyu (7d6d4e19-4203-4b09-a108-b9232d3d7a47) | Socket: WE7psIKRdZWdhAxTAAAB
+2026-04-27 10:02:08 [info]: Player connected: abc (2dca45be-401e-4081-954b-8cdefb69c689) | Socket: e3lmt4dosjg-2_EpAAAE
+2026-04-27 10:02:12 [error]: FastAPI error: Insufficient coins
+2026-04-27 10:02:12 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-27 10:02:17 [error]: FastAPI error: Insufficient coins
+2026-04-27 10:02:17 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-27 10:03:41 [error]: FastAPI error: Insufficient coins
+2026-04-27 10:03:41 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-27 10:03:53 [info]: Player disconnecting: abc | Reason: transport close
+2026-04-27 10:03:53 [info]: Player disconnected: abc | Reason: transport close
+2026-04-27 10:03:54 [info]: Player connected: abc (2dca45be-401e-4081-954b-8cdefb69c689) | Socket: jQZ52AvcTTl42iX_AAAH
+2026-04-27 10:04:04 [info]: Player disconnecting: abc | Reason: transport close
+2026-04-27 10:04:04 [info]: Player disconnected: abc | Reason: transport close

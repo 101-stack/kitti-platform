@@ -1,0 +1,21 @@
+{
+  "name": "Kitti Card Game",
+  "short_name": "Kitti",
+  "description": "Premium Multiplayer 9-Card Game",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a1a0d",
+  "theme_color": "#c9993a",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

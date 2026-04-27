@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /game/*/
+Disallow: /room/*/
+
+Sitemap: https://kitti-platform.com/sitemap.xml

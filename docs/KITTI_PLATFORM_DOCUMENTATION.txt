@@ -1,0 +1,1047 @@
+================================================================================
+  KITTI MULTIPLAYER CARD GAME PLATFORM — COMPLETE DOCUMENTATION
+  Version: 1.0.0
+  Last Updated: 2025
+================================================================================
+
+TABLE OF CONTENTS
+─────────────────
+1.  PRODUCT OVERVIEW
+2.  SYSTEM ARCHITECTURE
+3.  FOLDER STRUCTURE
+4.  DATABASE SCHEMA
+5.  REDIS DESIGN
+6.  API DOCUMENTATION (FastAPI)
+7.  SOCKET.IO EVENT REFERENCE (Node.js)
+8.  GAME RULES & LOGIC
+9.  ANTI-CHEAT DESIGN
+10. WALLET SYSTEM
+11. ENVIRONMENT VARIABLES
+12. LOCAL DEVELOPMENT SETUP
+13. DOCKER DEPLOYMENT
+14. VPS / UBUNTU PRODUCTION DEPLOYMENT
+15. PM2 PROCESS MANAGEMENT
+16. NGINX REVERSE PROXY CONFIG
+17. SCALING STRATEGY
+18. SECURITY HARDENING
+19. MONITORING & LOGGING
+
+================================================================================
+1. PRODUCT OVERVIEW
+================================================================================
+
+Kitti is a real-time multiplayer 9-card game (similar to Teen Patti) where 2–5
+players compete by arranging 9 dealt cards into 3 sets of 3 cards each and
+submitting them for evaluation.
+
+TECH STACK
+  Frontend   : Next.js 14 (App Router, TypeScript, Tailwind CSS)
+  Real-Time  : Node.js + Socket.IO v4
+  Game Logic : FastAPI (Python 3.12)
+  Database   : PostgreSQL 16
+  Cache/State: Redis 7
+  Auth       : JWT + OTP (phone/email)
+  Container  : Docker + Docker Compose
+
+KEY FEATURES
+  - Real-time multiplayer rooms (2–5 players)
+  - Server-side card dealing and hand evaluation (anti-cheat)
+  - Virtual coin wallet with entry fees and rewards
+  - OTP-based authentication (phone/email)
+  - Leaderboard with win/earnings stats
+  - Mobile-first responsive UI with felt-table aesthetic
+
+================================================================================
+2. SYSTEM ARCHITECTURE
+================================================================================
+
+  ┌────────────────────────────────────────┐
+  │         Next.js Frontend (:3000)       │
+  │   Pages: Login, Lobby, Room, Game      │
+  │   State: Zustand stores                │
+  └──────────┬───────────────┬─────────────┘
+             │ Socket.IO     │ REST (API routes)
+             ▼               ▼
+  ┌──────────────────┐  ┌────────────────────────┐
+  │  Node.js (:4000) │  │  FastAPI (:8000)        │
+  │  Socket.IO Engine│  │  Auth, Wallet,          │
+  │  Room/Game Mgmt  │  │  Game Logic, Leaderboard│
+  └──────┬───────────┘  └──────────┬─────────────┘
+         │ HTTP (internal)         │
+         │◄────────────────────────┘
+         │
+  ┌──────▼─────────┐     ┌───────────────────────┐
+  │  Redis (:6379) │     │  PostgreSQL (:5432)    │
+  │  Game State    │     │  Users, Matches,       │
+  │  Room State    │     │  Transactions, OTP     │
+  └────────────────┘     └───────────────────────┘
+
+DATA FLOW
+  1. Player authenticates via FastAPI → gets JWT
+  2. Frontend connects to Node.js Socket.IO with JWT
+  3. Node.js validates JWT in middleware
+  4. Room/game events flow through Node.js ↔ Redis
+  5. Game evaluation calls Node.js → FastAPI (internal HTTP)
+  6. Match results + wallet updates written to PostgreSQL via FastAPI
+  7. Real-time updates broadcast from Node.js to all room members
+
+================================================================================
+3. FOLDER STRUCTURE
+================================================================================
+
+kitti-platform/
+├── node-server/                   # Socket.IO real-time server
+│   ├── src/
+│   │   ├── index.js               # Entry point, express + socket setup
+│   │   ├── sockets/
+│   │   │   ├── roomHandler.js     # create_room, join_room, leave_room
+│   │   │   └── gameHandler.js     # start_game, deal_cards, submit_sets
+│   │   ├── game-engine/
+│   │   │   ├── deck.js            # Deck build, Fisher-Yates shuffle, deal
+│   │   │   ├── evaluator.js       # Hand rank evaluation (Trail→High Card)
+│   │   │   └── validator.js       # Anti-cheat move validation
+│   │   ├── services/
+│   │   │   ├── redisService.js    # Redis wrapper with game/room helpers
+│   │   │   └── fastapiService.js  # HTTP client for FastAPI calls
+│   │   ├── middlewares/
+│   │   │   ├── authMiddleware.js  # Socket.IO JWT verification
+│   │   │   └── rateLimitMiddleware.js
+│   │   └── utils/
+│   │       └── logger.js          # Winston logger
+│   ├── .env.example
+│   ├── Dockerfile
+│   └── package.json
+│
+├── fastapi-service/               # Python game logic + data API
+│   ├── app/
+│   │   ├── main.py                # FastAPI app, CORS, startup
+│   │   ├── config.py              # Pydantic settings
+│   │   ├── database.py            # Async SQLAlchemy engine + session
+│   │   ├── models/
+│   │   │   └── models.py          # SQLAlchemy ORM models
+│   │   ├── schemas/
+│   │   │   └── schemas.py         # Pydantic request/response schemas
+│   │   ├── routes/
+│   │   │   ├── auth.py            # OTP, JWT, user registration
+│   │   │   ├── game.py            # evaluate-round, validate-sets
+│   │   │   ├── wallet.py          # transaction, balance, history
+│   │   │   ├── matches.py         # complete match, history, detail
+│   │   │   └── leaderboard.py     # Top players ranking
+│   │   └── services/
+│   │       ├── game_logic.py      # Python hand evaluator (mirrors Node)
+│   │       └── auth_service.py    # OTP, JWT, user helpers
+│   ├── .env.example
+│   ├── Dockerfile
+│   └── requirements.txt
+│
+├── frontend/                      # Next.js App Router frontend
+│   ├── src/
+│   │   ├── app/
+│   │   │   ├── layout.tsx         # Root layout, fonts, toaster
+│   │   │   ├── globals.css        # Design system, card styles
+│   │   │   ├── page.tsx           # Root → redirect to /lobby
+│   │   │   ├── login/page.tsx     # OTP login flow
+│   │   │   ├── lobby/page.tsx     # Create/join room, leaderboard
+│   │   │   ├── room/[roomId]/page.tsx   # Waiting room
+│   │   │   └── game/
+│   │   │       ├── [gameId]/page.tsx    # Live game table
+│   │   │       └── [gameId]/result/page.tsx  # Game result
+│   │   ├── components/
+│   │   │   └── game/
+│   │   │       ├── PlayingCard.tsx # Card + CardBack component
+│   │   │       └── SetBuilder.tsx  # 9-card → 3-set arrangement UI
+│   │   ├── hooks/
+│   │   │   └── useSocket.ts       # Socket event bindings + emitters
+│   │   ├── lib/
+│   │   │   ├── api.ts             # Axios client + API methods
+│   │   │   └── socket.ts          # Socket.IO singleton
+│   │   ├── store/
+│   │   │   └── gameStore.ts       # Zustand auth + room + game stores
+│   │   └── types/
+│   │       └── game.ts            # Full TypeScript type definitions
+│   ├── .env.example
+│   ├── Dockerfile
+│   ├── next.config.js
+│   └── tailwind.config.js
+│
+├── database/
+│   └── schema.sql                 # Full PostgreSQL schema + indexes
+│
+└── docker/
+    └── docker-compose.yml         # Full stack orchestration
+
+================================================================================
+4. DATABASE SCHEMA
+================================================================================
+
+TABLE: users
+  id            UUID         PK
+  username      VARCHAR(50)  UNIQUE NOT NULL
+  email         VARCHAR(255) UNIQUE
+  phone         VARCHAR(20)  UNIQUE
+  password_hash VARCHAR(255)
+  coins         BIGINT       DEFAULT 1000 (welcome bonus)
+  is_active     BOOLEAN      DEFAULT TRUE
+  is_verified   BOOLEAN      DEFAULT FALSE
+  total_games   INTEGER      DEFAULT 0
+  total_wins    INTEGER      DEFAULT 0
+  total_earnings BIGINT      DEFAULT 0
+  created_at    TIMESTAMPTZ
+  updated_at    TIMESTAMPTZ
+  last_seen_at  TIMESTAMPTZ
+
+  CONSTRAINT: email IS NOT NULL OR phone IS NOT NULL
+
+TABLE: rooms
+  id          VARCHAR(8)   PK (short code e.g. "A3F9B2C1")
+  host_id     UUID         FK → users
+  status      ENUM         (waiting|playing|finished|cancelled)
+  max_players INTEGER      CHECK 2–5
+  entry_fee   INTEGER      DEFAULT 100
+  options     JSONB        { "enable235Rule": boolean }
+  created_at  TIMESTAMPTZ
+  closed_at   TIMESTAMPTZ
+
+TABLE: matches
+  id           UUID        PK
+  room_id      VARCHAR(8)  FK → rooms
+  winner_id    UUID        FK → users (NULL = tie)
+  status       ENUM        (in_progress|complete|cancelled)
+  total_pot    INTEGER
+  is_tie       BOOLEAN     DEFAULT FALSE
+  result_data  JSONB       (full result snapshot for auditing)
+  started_at   TIMESTAMPTZ
+  completed_at TIMESTAMPTZ
+
+TABLE: match_players
+  id           UUID    PK
+  match_id     UUID    FK → matches
+  user_id      UUID    FK → users
+  sets_won     INTEGER CHECK 0–3
+  is_winner    BOOLEAN
+  coins_earned INTEGER
+  coins_lost   INTEGER
+  UNIQUE (match_id, user_id)
+
+TABLE: transactions
+  id             UUID            PK
+  user_id        UUID            FK → users
+  match_id       UUID            FK → matches (nullable)
+  amount         INTEGER         CHECK > 0
+  type           ENUM            (credit|debit|refund)
+  description    VARCHAR(255)
+  balance_before BIGINT
+  balance_after  BIGINT
+  created_at     TIMESTAMPTZ
+
+TABLE: otp_codes
+  id         UUID
+  target     VARCHAR(255)  (phone or email)
+  code       VARCHAR(6)
+  is_used    BOOLEAN       DEFAULT FALSE
+  expires_at TIMESTAMPTZ
+  created_at TIMESTAMPTZ
+
+================================================================================
+5. REDIS DESIGN
+================================================================================
+
+KEY PATTERNS
+  room:{roomId}                     → Full room state JSON (TTL: 2 hours)
+  game:{gameId}                     → Full game state JSON (TTL: 2 hours)
+  game:{gameId}:cards:{userId}      → Player's private 9 cards (TTL: 2 hours)
+  disconnect:{roomId}:{userId}      → Disconnect grace tracking (TTL: 5 min)
+  ratelimit:connect:{userId}        → Rate limit counter (TTL: 60s window)
+
+ROOM STATE SCHEMA (JSON)
+  {
+    roomId:       string,
+    hostId:       string,
+    status:       "waiting" | "playing" | "finished",
+    maxPlayers:   number,
+    entryFee:     number,
+    options:      { enable235Rule: boolean },
+    players:      [{ userId, username, isReady, isConnected }],
+    currentGameId: string | null,
+    createdAt:    timestamp
+  }
+
+GAME STATE SCHEMA (JSON)
+  {
+    gameId:         string,
+    roomId:         string,
+    status:         "dealing" | "submitting" | "evaluating" | "complete",
+    players:        [{ userId, username, hasSubmitted, submittedAt, sets? }],
+    options:        { enable235Rule: boolean },
+    entryFee:       number,
+    totalPot:       number,
+    startedAt:      timestamp,
+    submitDeadline: timestamp,
+    result:         { ... } | null
+  }
+
+PLAYER CARDS (Private — never shared)
+  [
+    { id, suit, value, displayValue, display },  // × 9
+    ...
+  ]
+
+SECURITY NOTE: Player cards are stored per-userId under a game-scoped key.
+Cards are only ever sent via targeted socket.emit() to the owning player.
+They are never included in the shared game state.
+
+================================================================================
+6. API DOCUMENTATION (FastAPI)
+================================================================================
+
+BASE URL: http://localhost:8000
+
+─── AUTHENTICATION ─────────────────────────────────────────────────────────────
+
+POST /api/auth/request-otp
+  Request:  { target: string, type: "phone" | "email" }
+  Response: { message: "OTP sent", dev_otp?: string }
+  Notes:    dev_otp only returned in NODE_ENV=development
+
+POST /api/auth/verify-otp
+  Request:  { target, code: string[6], username?: string }
+  Response: { access_token, token_type: "bearer", user: UserPublic }
+  Notes:    Creates account if new user (username required first time)
+
+POST /api/auth/register
+  Request:  { username, email?, phone?, password? }
+  Response: { access_token, token_type, user }
+
+GET /api/auth/me
+  Headers:  Authorization: Bearer <token>
+  Response: UserProfile (includes email, phone, total_earnings)
+
+─── GAME LOGIC (Internal — protected by X-Internal-Key header) ──────────────
+
+POST /api/evaluate-round
+  Request:
+    {
+      player_sets: [
+        {
+          user_id: string,
+          username: string,
+          sets: [
+            [card, card, card],  // Set 1
+            [card, card, card],  // Set 2
+            [card, card, card]   // Set 3
+          ]
+        }
+      ],
+      options: { enable235Rule: boolean }
+    }
+  Response:
+    {
+      set_results: [
+        {
+          set_index: 0|1|2,
+          rankings: [{ rank, user_id, username, hand, hand_name, hand_rank, tiebreakers }],
+          winner: string | null,
+          is_tie: boolean
+        }
+      ],
+      points_map: { userId: setsWon },
+      overall_winner: string | null,
+      is_tie: boolean
+    }
+
+POST /api/validate-sets
+  Request:  { user_id, sets: [[[card]×3]×3], dealt_cards: [card]×9 }
+  Response: { valid: boolean, error?: string }
+
+─── WALLET ─────────────────────────────────────────────────────────────────────
+
+POST /api/wallet/transaction  [Internal]
+  Request:  { user_id, amount, type: "credit"|"debit"|"refund", match_id?, description? }
+  Response: TransactionResponse { id, amount, type, balance_before, balance_after, created_at }
+
+GET /api/wallet/balance
+  Headers:  Authorization: Bearer <token>
+  Response: { user_id, coins, total_earnings }
+
+GET /api/wallet/history?limit=20&offset=0
+  Headers:  Authorization: Bearer <token>
+  Response: { transactions: [...], limit, offset }
+
+─── MATCHES ────────────────────────────────────────────────────────────────────
+
+POST /api/matches/complete  [Internal]
+  Request:  { room_id, winner_id?, player_results: [{user_id, sets_won, is_winner}], total_pot }
+  Response: { match_id, status: "saved" }
+
+GET /api/matches/history?limit=20&offset=0
+  Headers:  Authorization: Bearer <token>
+  Response: { matches: [...], limit, offset }
+
+GET /api/matches/{match_id}
+  Headers:  Authorization: Bearer <token>
+  Response: { match: MatchSummary, players: [...] }
+
+─── LEADERBOARD ────────────────────────────────────────────────────────────────
+
+GET /api/leaderboard?limit=10&sort_by=wins
+  sort_by:  wins | earnings | games
+  Response:
+    {
+      entries: [
+        { rank, user_id, username, total_wins, total_games, win_rate, total_earnings, coins }
+      ],
+      total: number,
+      updated_at: datetime
+    }
+
+─── HEALTH ─────────────────────────────────────────────────────────────────────
+
+GET /health
+  Response: { status: "ok", service: "kitti-fastapi", version: "1.0.0" }
+
+================================================================================
+7. SOCKET.IO EVENT REFERENCE
+================================================================================
+
+─── CLIENT → SERVER (Emitted by frontend) ───────────────────────────────────
+
+create_room
+  Payload:  { maxPlayers: 2–5, enable235Rule: boolean, entryFee: number }
+  Callback: { success, roomId, roomState } | { success: false, error }
+
+join_room
+  Payload:  { roomId: string }
+  Callback: { success, roomState } | { success: false, error }
+
+leave_room
+  Payload:  { roomId: string }
+  Callback: { success } | { success: false, error }
+
+player_ready
+  Payload:  { roomId: string }
+  Callback: { success, isReady }
+
+get_room_state
+  Payload:  { roomId: string }
+  Callback: { success, roomState }
+
+start_game         [Host only]
+  Payload:  { roomId: string }
+  Callback: { success, gameId } | { success: false, error }
+
+submit_sets
+  Payload:  { gameId: string, sets: [[[card]×3]×3] }
+  Callback: { success } | { success: false, error }
+
+reconnect_game
+  Payload:  { gameId: string }
+  Callback: { success, gameState, myCards } — restores state after disconnect
+
+─── SERVER → CLIENT (Received by frontend) ──────────────────────────────────
+
+room_updated
+  Payload:  RoomState — broadcast to all room members when room changes
+
+player_joined
+  Payload:  { userId, username, roomState }
+
+player_left
+  Payload:  { userId, username, newHostId, roomState }
+
+player_disconnect
+  Payload:  { userId, username, reason, timestamp }
+
+game_started
+  Payload:  { gameId, players, submitDeadline }  — broadcast to room
+
+deal_cards         [Private — only to the receiving player]
+  Payload:  { gameId, cards: Card[9], submitDeadline }
+  Note:     Sent via targeted socket.emit, never to the full room
+
+player_submitted
+  Payload:  { userId, username, submittedAt, playersSubmitted, totalPlayers }
+  Note:     Does NOT reveal the submitted sets
+
+players_timed_out
+  Payload:  { timedOut: [{ userId, username }] }
+
+game_result        [Broadcast after all submit or timeout]
+  Payload:  {
+    gameId, overallWinner, isTie,
+    setResults: [{ setIndex, rankings, winner, isTie }],
+    pointsMap: { userId: setsWon },
+    totalPot,
+    playerSets: [{ userId, username, sets }]  ← all cards revealed post-game
+  }
+
+game_cancelled
+  Payload:  { reason: string }
+
+error
+  Payload:  { message: string }
+
+─── ERROR CODES ────────────────────────────────────────────────────────────────
+
+AUTH_REQUIRED     No token provided in socket handshake
+AUTH_EXPIRED      JWT token has expired
+AUTH_INVALID      JWT token is malformed or invalid
+RATE_LIMIT        Too many connection attempts (>10 per 60s)
+
+================================================================================
+8. GAME RULES & LOGIC
+================================================================================
+
+THE GAME
+  - A standard 52-card deck is shuffled server-side
+  - Each player receives 9 cards (dealt face-down, private)
+  - Players arrange their 9 cards into 3 sets of 3 cards each
+  - Each set is evaluated as a 3-card poker hand
+  - The player who wins the most sets wins the match
+
+HAND RANKINGS (highest to lowest)
+  6 — Trail (Three of a Kind)      e.g. A-A-A, K-K-K
+  5 — Pure Sequence (Straight Flush) e.g. A♠-K♠-Q♠
+  4 — Sequence (Straight)          e.g. A-K-Q, 5-4-3 (mixed suits)
+  3 — Flush (Color)                e.g. K♥-9♥-3♥
+  2 — Pair                         e.g. Q-Q-7
+  1 — High Card                    e.g. A-K-9
+
+TIEBREAKER RULES
+  Same rank:     Compare card values in descending order
+  Trail:         Higher triple wins (A-A-A > K-K-K)
+  Pure/Sequence: Higher top card wins
+  Flush:         Compare all 3 cards high-to-low
+  Pair:          Higher pair wins; kicker if pair ties
+  High Card:     Compare all 3 cards high-to-low
+
+SPECIAL RULES
+  A-2-3:         Valid sequence (Ace plays low)
+  A-K-Q:         Valid sequence (Ace plays high)
+  2-3-5 Rule:    Optional — makes 2-3-5 the highest possible sequence
+                 (must be enabled at room creation)
+
+CARD VALUES
+  Ace=14, King=13, Queen=12, Jack=11, 10–2 as face value
+
+WINNING
+  Player who wins 2 out of 3 sets wins the match
+  If sets won are equal (1-1 on 2 players, or multi-way tie), it's a draw
+  Winner takes the entire pot (all entry fees)
+  Tie: pot is not distributed (house keeps, or refund option)
+
+SUBMISSION
+  Players have 60 seconds to arrange and submit their sets
+  Players who don't submit are removed from evaluation
+  If fewer than 2 players submit, game is cancelled and refunded
+
+================================================================================
+9. ANTI-CHEAT DESIGN
+================================================================================
+
+ALL GAME LOGIC IS SERVER-SIDE
+
+1. Card Dealing
+   - Deck built and shuffled by Node.js server (Fisher-Yates)
+   - Each player's 9 cards stored privately in Redis: game:{id}:cards:{userId}
+   - Cards are ONLY sent to the player who owns them via targeted socket.emit
+   - Other players' cards are never included in any broadcast
+
+2. Set Submission Validation
+   Server validates EVERY submission before accepting:
+   ✓ Exactly 3 sets submitted
+   ✓ Each set has exactly 3 cards
+   ✓ All 9 submitted card IDs match the dealt cards exactly
+   ✓ No duplicate card IDs across sets
+   ✓ Submission is within the deadline
+   ✓ Player hasn't already submitted
+   Any validation failure returns an error and logs the attempt
+
+3. Hand Evaluation
+   - Done server-side by the evaluator module
+   - Client-side evaluation is display-only (hand hints in UI)
+   - Server result is authoritative
+
+4. State Isolation
+   - Game state in Redis never includes other players' hands
+   - sanitizeGameState() strips opponents' set data before sending to clients
+
+5. Wallet
+   - All coin mutations happen atomically in PostgreSQL
+   - Only FastAPI modifies coin balances (never the client)
+   - Every transaction logged with balance_before and balance_after
+
+================================================================================
+10. WALLET SYSTEM
+================================================================================
+
+MVP VIRTUAL COINS
+  - New users receive 1000 coins on registration
+  - Entry fee: 100 coins per game (configurable via GAME_ENTRY_FEE env var)
+  - Winner receives: entryFee × playerCount coins
+  - All balances stored in PostgreSQL users.coins (BIGINT, minimum 0)
+
+TRANSACTION FLOW
+  1. Player creates or joins room → Node.js calls POST /api/wallet/transaction
+     { user_id, amount: 100, type: "debit", description: "Game entry fee" }
+  2. FastAPI validates balance, deducts coins, records transaction
+  3. After game: winner credited with full pot
+  4. All transactions include balance_before / balance_after for auditing
+
+COIN ACQUISITION (Future)
+  - In-app purchase (Stripe/Razorpay integration point)
+  - Daily login bonus
+  - Referral rewards
+
+================================================================================
+11. ENVIRONMENT VARIABLES
+================================================================================
+
+NODE SERVER (.env)
+  PORT                  4000
+  NODE_ENV              development | production
+  FRONTEND_URL          http://localhost:3000
+  JWT_SECRET            [64+ char random string]
+  REDIS_HOST            localhost
+  REDIS_PORT            6379
+  REDIS_PASSWORD        [optional]
+  FASTAPI_URL           http://localhost:8000
+  INTERNAL_API_KEY      [shared secret with FastAPI]
+  GAME_ENTRY_FEE        100
+  SUBMIT_TIMEOUT_MS     60000
+
+FASTAPI SERVICE (.env)
+  NODE_ENV              development | production
+  DATABASE_URL          postgresql+asyncpg://user:pass@host:5432/db
+  REDIS_URL             redis://localhost:6379/0
+  JWT_SECRET            [same as Node.js JWT_SECRET]
+  JWT_ALGORITHM         HS256
+  INTERNAL_API_KEY      [same as Node.js INTERNAL_API_KEY]
+  FRONTEND_URL          http://localhost:3000
+  NODE_SERVER_URL       http://localhost:4000
+  NEW_USER_COINS        1000
+  GAME_ENTRY_FEE        100
+
+FRONTEND (.env.local)
+  NEXT_PUBLIC_NODE_SERVER_URL   http://localhost:4000
+  NEXT_PUBLIC_FASTAPI_URL       http://localhost:8000
+
+CRITICAL: JWT_SECRET and INTERNAL_API_KEY must match across Node.js and FastAPI.
+Use at least 64 random characters for JWT_SECRET in production.
+
+================================================================================
+12. LOCAL DEVELOPMENT SETUP
+================================================================================
+
+PREREQUISITES
+  - Node.js 20+
+  - Python 3.12+
+  - PostgreSQL 16
+  - Redis 7
+  - Docker (optional but recommended)
+
+STEP 1: Clone and set up environment files
+
+  cp node-server/.env.example node-server/.env
+  cp fastapi-service/.env.example fastapi-service/.env
+  cp frontend/.env.example frontend/.env.local
+
+  Edit each .env file and set JWT_SECRET and INTERNAL_API_KEY to matching values.
+
+STEP 2: Start PostgreSQL and Redis
+
+  Option A — Docker:
+    docker run -d --name kitti-pg -e POSTGRES_DB=kitti_db \
+      -e POSTGRES_USER=kitti -e POSTGRES_PASSWORD=kitti_pass \
+      -p 5432:5432 postgres:16-alpine
+
+    docker run -d --name kitti-redis -p 6379:6379 redis:7-alpine
+
+  Option B — Local installation (macOS):
+    brew services start postgresql@16
+    brew services start redis
+
+STEP 3: Create database schema
+
+  psql -U kitti -d kitti_db -f database/schema.sql
+
+STEP 4: Start FastAPI
+
+  cd fastapi-service
+  python -m venv venv
+  source venv/bin/activate     # Windows: venv\Scripts\activate
+  pip install -r requirements.txt
+  uvicorn app.main:app --reload --port 8000
+
+STEP 5: Start Node.js server
+
+  cd node-server
+  npm install
+  npm run dev
+
+STEP 6: Start Next.js frontend
+
+  cd frontend
+  npm install
+  npm run dev
+
+  Open http://localhost:3000
+
+TESTING THE FULL FLOW
+  1. Open http://localhost:3000 in two browser windows
+  2. Login with phone: +1234567890 (OTP shown in FastAPI console)
+  3. Create a room in window 1
+  4. Join with room code in window 2
+  5. Start the game from window 1 (host)
+  6. Arrange cards in both windows and submit
+  7. Results page shows winner
+
+================================================================================
+13. DOCKER DEPLOYMENT
+================================================================================
+
+BUILD AND RUN ALL SERVICES
+
+  cd kitti-platform
+
+  # Copy and configure env files
+  cp node-server/.env.example node-server/.env
+  cp fastapi-service/.env.example fastapi-service/.env
+  # Edit both .env files with production secrets
+
+  # Build and start everything
+  docker-compose -f docker/docker-compose.yml up --build -d
+
+  # View logs
+  docker-compose -f docker/docker-compose.yml logs -f
+
+  # Stop everything
+  docker-compose -f docker/docker-compose.yml down
+
+  # Stop and remove volumes (destructive!)
+  docker-compose -f docker/docker-compose.yml down -v
+
+INDIVIDUAL SERVICE COMMANDS
+
+  # Rebuild only one service
+  docker-compose -f docker/docker-compose.yml up --build fastapi -d
+
+  # Execute commands inside container
+  docker exec -it kitti-fastapi bash
+  docker exec -it kitti-postgres psql -U kitti kitti_db
+
+HEALTHCHECK ENDPOINTS
+
+  Node.js:  GET http://localhost:4000/health
+  FastAPI:  GET http://localhost:8000/health
+  Redis:    docker exec kitti-redis redis-cli ping
+  Postgres: docker exec kitti-postgres pg_isready -U kitti
+
+================================================================================
+14. VPS / UBUNTU PRODUCTION DEPLOYMENT
+================================================================================
+
+PREREQUISITES ON UBUNTU 22.04 LTS
+
+  # Update system
+  sudo apt update && sudo apt upgrade -y
+
+  # Install Node.js 20
+  curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+  sudo apt install -y nodejs
+
+  # Install Python 3.12
+  sudo apt install -y python3.12 python3.12-venv python3-pip
+
+  # Install PostgreSQL 16
+  sudo apt install -y postgresql-16 postgresql-client-16
+
+  # Install Redis
+  sudo apt install -y redis-server
+  sudo systemctl enable redis-server
+
+  # Install Nginx
+  sudo apt install -y nginx
+
+  # Install PM2
+  sudo npm install -g pm2
+
+  # Install Docker (optional for containerized deployment)
+  curl -fsSL https://get.docker.com | bash
+  sudo usermod -aG docker $USER
+
+DATABASE SETUP
+
+  sudo -u postgres psql
+    CREATE DATABASE kitti_db;
+    CREATE USER kitti WITH ENCRYPTED PASSWORD 'your_strong_password';
+    GRANT ALL PRIVILEGES ON DATABASE kitti_db TO kitti;
+    \q
+
+  psql -U kitti -d kitti_db -f /path/to/database/schema.sql
+
+CLONE AND CONFIGURE
+
+  git clone https://github.com/yourorg/kitti-platform.git /opt/kitti
+  cd /opt/kitti
+
+  # Configure environment files
+  cp node-server/.env.example node-server/.env
+  nano node-server/.env   # Set production values
+
+  cp fastapi-service/.env.example fastapi-service/.env
+  nano fastapi-service/.env   # Set production values
+
+  # Install Node.js deps
+  cd node-server && npm install --production
+
+  # Install Python deps
+  cd ../fastapi-service
+  python3.12 -m venv venv
+  source venv/bin/activate
+  pip install -r requirements.txt
+
+  # Build frontend
+  cd ../frontend
+  cp .env.example .env.local
+  nano .env.local   # Set production URLs
+  npm install && npm run build
+
+================================================================================
+15. PM2 PROCESS MANAGEMENT
+================================================================================
+
+PM2 ECOSYSTEM FILE
+  Save this as /opt/kitti/ecosystem.config.js:
+
+  module.exports = {
+    apps: [
+      {
+        name: 'kitti-node',
+        cwd: '/opt/kitti/node-server',
+        script: 'src/index.js',
+        instances: 1,           // Increase if using Redis adapter for clustering
+        env: { NODE_ENV: 'production', PORT: 4000 },
+        error_file: '/var/log/kitti/node-error.log',
+        out_file: '/var/log/kitti/node-out.log',
+        log_date_format: 'YYYY-MM-DD HH:mm:ss',
+      },
+      {
+        name: 'kitti-fastapi',
+        cwd: '/opt/kitti/fastapi-service',
+        interpreter: 'venv/bin/python',
+        script: 'venv/bin/uvicorn',
+        args: 'app.main:app --host 127.0.0.1 --port 8000 --workers 2',
+        env: { NODE_ENV: 'production' },
+        error_file: '/var/log/kitti/fastapi-error.log',
+        out_file: '/var/log/kitti/fastapi-out.log',
+      },
+      {
+        name: 'kitti-frontend',
+        cwd: '/opt/kitti/frontend',
+        script: 'node_modules/.bin/next',
+        args: 'start -p 3000',
+        env: { NODE_ENV: 'production', PORT: 3000 },
+        error_file: '/var/log/kitti/frontend-error.log',
+        out_file: '/var/log/kitti/frontend-out.log',
+      },
+    ],
+  };
+
+  mkdir -p /var/log/kitti
+  pm2 start /opt/kitti/ecosystem.config.js
+  pm2 save
+  pm2 startup
+
+PM2 COMMANDS
+
+  pm2 status               # View all processes
+  pm2 logs kitti-node      # Tail logs for a service
+  pm2 restart kitti-node   # Restart one service
+  pm2 reload kitti-fastapi # Zero-downtime reload
+  pm2 delete all           # Stop all
+  pm2 monit                # Real-time dashboard
+
+================================================================================
+16. NGINX REVERSE PROXY CONFIG
+================================================================================
+
+Save as /etc/nginx/sites-available/kitti:
+
+  server {
+      listen 80;
+      server_name yourdomain.com www.yourdomain.com;
+
+      # Redirect HTTP → HTTPS
+      return 301 https://$server_name$request_uri;
+  }
+
+  server {
+      listen 443 ssl http2;
+      server_name yourdomain.com;
+
+      ssl_certificate     /etc/letsencrypt/live/yourdomain.com/fullchain.pem;
+      ssl_certificate_key /etc/letsencrypt/live/yourdomain.com/privkey.pem;
+
+      # Security headers
+      add_header X-Frame-Options DENY;
+      add_header X-Content-Type-Options nosniff;
+      add_header Strict-Transport-Security "max-age=31536000" always;
+
+      # ── Next.js Frontend ────────────────────────────────────────────────────
+      location / {
+          proxy_pass http://127.0.0.1:3000;
+          proxy_http_version 1.1;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection 'upgrade';
+          proxy_set_header Host $host;
+          proxy_cache_bypass $http_upgrade;
+      }
+
+      # ── Socket.IO (Node.js) ─────────────────────────────────────────────────
+      location /socket.io/ {
+          proxy_pass http://127.0.0.1:4000;
+          proxy_http_version 1.1;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection "upgrade";
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_read_timeout 3600s;
+          proxy_send_timeout 3600s;
+      }
+
+      # ── FastAPI REST ─────────────────────────────────────────────────────────
+      location /api/ {
+          proxy_pass http://127.0.0.1:8000;
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      }
+  }
+
+Enable and reload:
+  sudo ln -s /etc/nginx/sites-available/kitti /etc/nginx/sites-enabled/
+  sudo nginx -t
+  sudo systemctl reload nginx
+
+SSL with Certbot:
+  sudo apt install -y certbot python3-certbot-nginx
+  sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
+
+================================================================================
+17. SCALING STRATEGY
+================================================================================
+
+CURRENT (MVP — Single Server)
+  All services on one VPS. Sufficient for ~100 concurrent players.
+
+PHASE 2 — HORIZONTAL SCALING (1K+ players)
+
+  Node.js Horizontal Scaling:
+  - Add @socket.io/redis-adapter to share socket rooms across Node.js instances
+  - Run N Node.js instances (one per CPU core)
+  - Nginx upstream load balances with sticky sessions:
+      upstream kitti_socketio {
+          ip_hash;
+          server 127.0.0.1:4001;
+          server 127.0.0.1:4002;
+          server 127.0.0.1:4003;
+      }
+
+  FastAPI Scaling:
+  - Increase uvicorn --workers to match CPU cores
+  - Or deploy with Gunicorn + uvicorn workers:
+      gunicorn app.main:app -k uvicorn.workers.UvicornWorker -w 4
+
+  Database Scaling:
+  - Read replicas for leaderboard and history queries
+  - Connection pooling via PgBouncer (transaction mode)
+  - Partition transactions table by month if >10M rows
+
+  Redis Scaling:
+  - Redis Sentinel for HA (automatic failover)
+  - Redis Cluster for data sharding at very high scale
+
+PHASE 3 — MICROSERVICES (10K+ players)
+  - Separate game rooms into their own service
+  - Event-driven architecture with Kafka/RabbitMQ
+  - CDN for frontend (Cloudflare / Vercel)
+  - Kubernetes for container orchestration
+  - Separate read/write databases
+
+ESTIMATED CAPACITY PER VPS TIER
+  2 vCPU, 4GB RAM  → ~100 concurrent players, 20 active games
+  4 vCPU, 8GB RAM  → ~500 concurrent players, 100 active games
+  8 vCPU, 16GB RAM → ~2000 concurrent players, 400 active games
+
+================================================================================
+18. SECURITY HARDENING
+================================================================================
+
+AUTHENTICATION
+  ✓ JWT secret: minimum 64 random characters
+  ✓ Tokens expire after 24 hours (configurable)
+  ✓ OTP codes expire after 10 minutes
+  ✓ Used OTPs immediately invalidated in DB
+  ✓ Rate limiting on socket connections (10/min per user)
+
+ANTI-CHEAT
+  ✓ All card logic server-side
+  ✓ Player cards never broadcast to room (only private emit)
+  ✓ Every set submission validated against Redis-stored dealt cards
+  ✓ Move timestamps validated against deadline
+
+NETWORK
+  ✓ HTTPS enforced via Nginx + Certbot
+  ✓ Internal services only exposed on 127.0.0.1
+  ✓ INTERNAL_API_KEY protects Node → FastAPI calls
+  ✓ CORS restricted to known frontend origin
+  ✓ Firewall: only ports 80, 443, 22 public
+
+DATABASE
+  ✓ Parameterized queries (SQLAlchemy ORM — no raw SQL)
+  ✓ Minimum privilege DB user
+  ✓ Connection pooling with max limits
+
+PRODUCTION CHECKLIST
+  [ ] Change all default passwords in .env
+  [ ] Set NODE_ENV=production
+  [ ] Remove dev_otp from OTP endpoint response
+  [ ] Disable /docs and /redoc endpoints
+  [ ] Enable PostgreSQL SSL connections
+  [ ] Set up daily database backups (pg_dump)
+  [ ] Configure Redis maxmemory and eviction policy
+  [ ] Enable UFW firewall:
+        sudo ufw allow 22/tcp
+        sudo ufw allow 80/tcp
+        sudo ufw allow 443/tcp
+        sudo ufw enable
+
+================================================================================
+19. MONITORING & LOGGING
+================================================================================
+
+LOGGING
+  Node.js: Winston logs to /var/log/kitti/node-*.log + console
+  FastAPI: Python logging to /var/log/kitti/fastapi-*.log
+  Nginx: /var/log/nginx/access.log, error.log
+  PM2: pm2 logs, pm2 monit
+
+HEALTH MONITORING
+  curl http://localhost:4000/health     # Node.js
+  curl http://localhost:8000/health     # FastAPI
+
+RECOMMENDED MONITORING STACK (optional)
+  - Prometheus + Grafana: metrics dashboards
+  - Sentry: error tracking for Node.js and Python
+  - Uptime Robot: external uptime monitoring (free tier)
+  - Better Stack (Logtail): centralized log aggregation
+
+ALERTING RULES TO CONFIGURE
+  - Redis memory > 80% → scale or flush
+  - PostgreSQL connections > 80 → increase pool or add replicas
+  - Node.js restart loops → investigate crash logs
+  - Error rate spike → check Socket.IO error events
+
+================================================================================
+END OF DOCUMENTATION
+================================================================================

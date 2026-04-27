@@ -1,0 +1,116 @@
+version: '3.9'
+
+# ─── Kitti Platform — Docker Compose ─────────────────────────────────────────
+# Services: PostgreSQL, Redis, FastAPI, Node.js, Next.js (frontend)
+# Usage: docker-compose up --build
+
+services:
+
+  # ── PostgreSQL ──────────────────────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: kitti-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB:       kitti_db
+      POSTGRES_USER:     kitti
+      POSTGRES_PASSWORD: kitti_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ../database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kitti -d kitti_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── Redis ────────────────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: kitti-redis
+    restart: unless-stopped
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── FastAPI ──────────────────────────────────────────────────────────────────
+  fastapi:
+    build:
+      context: ../fastapi-service
+      dockerfile: Dockerfile
+    container_name: kitti-fastapi
+    restart: unless-stopped
+    env_file: ../fastapi-service/.env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://kitti:kitti_pass@postgres:5432/kitti_db
+      REDIS_URL:    redis://redis:6379/0
+      NODE_ENV:     production
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  # ── Node.js Socket Server ────────────────────────────────────────────────────
+  nodeserver:
+    build:
+      context: ../node-server
+      dockerfile: Dockerfile
+    container_name: kitti-node
+    restart: unless-stopped
+    env_file: ../node-server/.env
+    environment:
+      REDIS_HOST:   redis
+      REDIS_PORT:   "6379"
+      FASTAPI_URL:  http://fastapi:8000
+      NODE_ENV:     production
+      PORT:         "4000"
+    ports:
+      - "4000:4000"
+    depends_on:
+      redis:
+        condition: service_healthy
+      fastapi:
+        condition: service_healthy
+
+  # ── Next.js Frontend ─────────────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_NODE_SERVER_URL: ${NEXT_PUBLIC_NODE_SERVER_URL:-http://localhost:4000}
+        NEXT_PUBLIC_FASTAPI_URL:     ${NEXT_PUBLIC_FASTAPI_URL:-http://localhost:8000}
+    container_name: kitti-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    depends_on:
+      - nodeserver
+      - fastapi
+    environment:
+      NODE_ENV: production
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  default:
+    name: kitti-network
