@@ -15,6 +15,7 @@ $nodeUrl     = "https://node-server-kitti.up.railway.app"
 # Generate secure keys
 $jwtSecret = -join ((48..57) + (65..90) + (97..122) | Get-Random -Count 32 | % {[char]$_})
 $internalKey = [System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes("kitti-internal-$(Get-Random)"))
+$databaseUrl = "postgresql://neondb_owner:npg_4VxehED6gUMN@ep-wandering-credit-amwebh6s-pooler.c-5.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 
 $headers = @{ "Authorization" = "Bearer $token"; "Content-Type" = "application/json" }
 
@@ -36,6 +37,7 @@ Set-Var $frontendId "NEXT_PUBLIC_NODE_SERVER_URL" $nodeUrl
 Set-Var $frontendId "NEXT_PUBLIC_FASTAPI_URL" $fastapiUrl
 
 Write-Host "FastAPI:"
+Set-Var $fastapiId "DATABASE_URL" $databaseUrl
 Set-Var $fastapiId "FRONTEND_URL" $frontendUrl
 Set-Var $fastapiId "NODE_SERVER_URL" $nodeUrl
 Set-Var $fastapiId "JWT_SECRET" $jwtSecret

@@ -11,8 +11,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy app
+# Copy app and migrations
 COPY app/ ./app/
+COPY alembic/ ./alembic/
+COPY alembic.ini .
 
 # Non-root user
 RUN useradd -m -u 1001 appuser && chown -R appuser:appuser /app
@@ -20,4 +22,5 @@ USER appuser
 
 EXPOSE 8000
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "2"]
+# Run migrations and start app
+CMD ["sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000 --workers 2"]
