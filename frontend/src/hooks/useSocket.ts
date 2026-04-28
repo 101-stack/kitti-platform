@@ -58,9 +58,10 @@ export const useSocket = () => {
     socket.on('game_started', (payload: GameStartedPayload) => {
       setGameId(payload.gameId);
       setSubmitDeadline(payload.submitDeadline);
-      if (room) {
+      const currentRoom = useRoomStore.getState().room;
+      if (currentRoom) {
         setRoom({
-          ...room,
+          ...currentRoom,
           status: 'playing',
           currentGameId: payload.gameId,
         });
@@ -138,7 +139,7 @@ export const useSocket = () => {
       disconnectSocket();
       socketRef.current = null;
     };
-  }, [token, user, room]);
+  }, [token, user]);
 
   // ── Emit Helpers ──────────────────────────────────────────────────────────
 

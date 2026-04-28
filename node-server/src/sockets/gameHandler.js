@@ -318,6 +318,15 @@ async function _evaluateAndFinish(io, gameId, gameState) {
       }));
     const humanWinner = paidPlayers.includes(overallWinner) ? overallWinner : null;
 
+    // Save match to PostgreSQL FIRST so transactions have a valid match_id
+    await fastapiService.saveMatchResult(
+      gameId,
+      gameState.roomId,
+      isTie ? null : humanWinner,
+      humanPlayerResults,
+      totalPot
+    );
+
     // Award winnings / refunds
     if (humanWinner && !isTie) {
       await fastapiService.processTransaction(humanWinner, totalPot, 'credit', gameId);
@@ -331,14 +340,6 @@ async function _evaluateAndFinish(io, gameId, gameState) {
         );
       }
     }
-
-    // Save match to PostgreSQL
-    await fastapiService.saveMatchResult(
-      gameState.roomId,
-      isTie ? null : humanWinner,
-      humanPlayerResults,
-      totalPot
-    );
 
     // Update game state
     gameState.status = 'complete';
@@ -404,7 +405,7 @@ async function _handleSubmitTimeout(io, gameId, roomId) {
             paidUserId,
             gameState.entryFee,
             'refund',
-            gameId
+            null
           );
         } catch (refundErr) {
           logger.error(`timeout refund error: ${refundErr.message}`);

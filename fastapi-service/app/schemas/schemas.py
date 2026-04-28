@@ -161,6 +161,7 @@ class PlayerResultSchema(BaseModel):
 
 
 class CompleteMatchRequest(BaseModel):
+    match_id: str
     room_id: str
     winner_id: Optional[str] = None
     player_results: List[PlayerResultSchema]

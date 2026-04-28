@@ -41,6 +41,7 @@ async def complete_match(
 
         # Create match record
         match = Match(
+            id=UUID(data.match_id),
             room_id=data.room_id,
             winner_id=UUID(data.winner_id) if data.winner_id else None,
             status=MatchStatus.complete,

@@ -85,8 +85,9 @@ const processTransaction = async (userId, amount, type, matchId) => {
 /**
  * Save match result to PostgreSQL via FastAPI
  */
-const saveMatchResult = async (roomId, winnerId, playerResults, totalPot) => {
+const saveMatchResult = async (matchId, roomId, winnerId, playerResults, totalPot) => {
   const response = await fastapiClient.post('/api/matches/complete', {
+    match_id: matchId,
     room_id: roomId,
     winner_id: winnerId,
     player_results: playerResults,
