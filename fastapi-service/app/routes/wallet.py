@@ -50,10 +50,10 @@ async def process_transaction(
         if data.type == "credit":
             user.coins += data.amount
             user.total_earnings += data.amount
-        elif data.type in ("debit", "refund"):
+        elif data.type == "debit":
             user.coins -= data.amount
-            if data.type == "refund":
-                user.coins += data.amount  # Refund adds back
+        elif data.type == "refund":
+            user.coins += data.amount
 
         balance_after = user.coins
 

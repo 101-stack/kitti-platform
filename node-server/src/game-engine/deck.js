@@ -3,6 +3,7 @@
  * All card operations happen server-side only.
  * Cards are NEVER sent to clients in bulk — only a player's own cards.
  */
+const crypto = require('crypto');
 
 // ─── Card Definitions ──────────────────────────────────────────────────────────
 
@@ -45,8 +46,7 @@ const buildDeck = () => {
 const shuffle = (array) => {
   const arr = [...array];
   for (let i = arr.length - 1; i > 0; i--) {
-    // Use Math.random() — for production, replace with crypto.randomInt
-    const j = Math.floor(Math.random() * (i + 1));
+    const j = crypto.randomInt(0, i + 1);
     [arr[i], arr[j]] = [arr[j], arr[i]];
   }
   return arr;

@@ -14,7 +14,7 @@ import type {
 export const useSocket = () => {
   const socketRef = useRef<Socket | null>(null);
   const { token, user } = useAuthStore();
-  const { setRoom, updateRoom } = useRoomStore();
+  const { room, setRoom, updateRoom } = useRoomStore();
   const {
     setGameId, setGameState, setMyCards, setSubmitDeadline,
     setGameResult, setHasSubmitted, resetGame
@@ -24,7 +24,11 @@ export const useSocket = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!token) return;
+    if (!token) {
+      disconnectSocket();
+      socketRef.current = null;
+      return;
+    }
 
     const socket = getSocket(token);
     socketRef.current = socket;
@@ -54,6 +58,13 @@ export const useSocket = () => {
     socket.on('game_started', (payload: GameStartedPayload) => {
       setGameId(payload.gameId);
       setSubmitDeadline(payload.submitDeadline);
+      if (room) {
+        setRoom({
+          ...room,
+          status: 'playing',
+          currentGameId: payload.gameId,
+        });
+      }
       toast.success('Game started! Dealing cards...', { duration: 3000 });
     });
 
@@ -124,8 +135,10 @@ export const useSocket = () => {
       socket.off('game_result');
       socket.off('game_cancelled');
       socket.off('error');
+      disconnectSocket();
+      socketRef.current = null;
     };
-  }, [token, user]);
+  }, [token, user, room]);
 
   // ── Emit Helpers ──────────────────────────────────────────────────────────
 

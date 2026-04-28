@@ -26,6 +26,29 @@ module.exports = (io, socket) => {
         return callback?.({ success: false, error: validation.error });
       }
 
+      const realPlayers = roomState.players.filter((p) => !p.isBot);
+      const chargedPlayers = [];
+      try {
+        for (const player of realPlayers) {
+          await fastapiService.processTransaction(player.userId, roomState.entryFee, 'debit', null);
+          chargedPlayers.push(player.userId);
+        }
+      } catch (err) {
+        for (const chargedUserId of chargedPlayers) {
+          try {
+            await fastapiService.processTransaction(
+              chargedUserId,
+              roomState.entryFee,
+              'refund',
+              null
+            );
+          } catch (refundErr) {
+            logger.error(`refund rollback error: ${refundErr.message}`);
+          }
+        }
+        return callback?.({ success: false, error: err.message });
+      }
+
       // ── Fill with bots if needed ───────────────────────────────────────────
       const botsNeeded = roomState.maxPlayers - roomState.players.length;
       const gameBots = [];
@@ -65,7 +88,8 @@ module.exports = (io, socket) => {
         })),
         options: roomState.options,
         entryFee: roomState.entryFee,
-        totalPot: allPlayers.length * roomState.entryFee,
+        totalPot: realPlayers.length * roomState.entryFee,
+        paidPlayers: realPlayers.map((p) => p.userId),
         startedAt: Date.now(),
         submitDeadline: Date.now() + SUBMIT_TIMEOUT_MS,
         rounds: [],
@@ -77,6 +101,7 @@ module.exports = (io, socket) => {
       roomState.status = 'playing';
       roomState.currentGameId = gameId;
       await redis.saveRoom(roomId, roomState);
+      io.to(roomId).emit('room_updated', roomState);
 
       // Notify all players game is starting
       io.to(roomId).emit('game_started', {
@@ -283,23 +308,35 @@ async function _evaluateAndFinish(io, gameId, gameState) {
     // Determine winnings
     const { overallWinner, setResults, pointsMap, isTie } = result;
     const totalPot = gameState.totalPot;
+    const paidPlayers = gameState.paidPlayers || [];
+    const humanPlayerResults = gameState.players
+      .filter((p) => paidPlayers.includes(p.userId))
+      .map((p) => ({
+        userId: p.userId,
+        setsWon: pointsMap[p.userId] || 0,
+        isWinner: p.userId === overallWinner && !isTie,
+      }));
+    const humanWinner = paidPlayers.includes(overallWinner) ? overallWinner : null;
 
-    // Award winnings
-    if (overallWinner && !isTie) {
-      await fastapiService.processTransaction(overallWinner, totalPot, 'credit', gameId);
+    // Award winnings / refunds
+    if (humanWinner && !isTie) {
+      await fastapiService.processTransaction(humanWinner, totalPot, 'credit', gameId);
+    } else if (isTie) {
+      for (const paidUserId of paidPlayers) {
+        await fastapiService.processTransaction(
+          paidUserId,
+          gameState.entryFee,
+          'refund',
+          gameId
+        );
+      }
     }
 
     // Save match to PostgreSQL
-    const playerResults = gameState.players.map(p => ({
-      userId: p.userId,
-      setsWon: pointsMap[p.userId] || 0,
-      isWinner: p.userId === overallWinner && !isTie,
-    }));
-
     await fastapiService.saveMatchResult(
       gameState.roomId,
-      isTie ? null : overallWinner,
-      playerResults,
+      isTie ? null : humanWinner,
+      humanPlayerResults,
       totalPot
     );
 
@@ -359,11 +396,33 @@ async function _handleSubmitTimeout(io, gameId, roomId) {
     // Remove non-submitters from evaluation
     gameState.players = gameState.players.filter(p => p.hasSubmitted);
 
-    if (gameState.players.length < 1) {
-      // Not enough players — refund everyone and cancel
-      io.to(roomId).emit('game_cancelled', { reason: 'No players submitted.' });
+    if (gameState.players.length < 2) {
+      const paidPlayers = gameState.paidPlayers || [];
+      for (const paidUserId of paidPlayers) {
+        try {
+          await fastapiService.processTransaction(
+            paidUserId,
+            gameState.entryFee,
+            'refund',
+            gameId
+          );
+        } catch (refundErr) {
+          logger.error(`timeout refund error: ${refundErr.message}`);
+        }
+      }
+
+      io.to(roomId).emit('game_cancelled', { reason: 'Not enough players submitted. Entry fees refunded.' });
       gameState.status = 'cancelled';
       await redis.saveGame(gameId, gameState);
+
+      const roomState = await redis.getRoom(roomId);
+      if (roomState) {
+        roomState.status = 'waiting';
+        roomState.currentGameId = null;
+        roomState.players.forEach((p) => { p.isReady = false; });
+        await redis.saveRoom(roomId, roomState);
+        io.to(roomId).emit('room_updated', roomState);
+      }
       return;
     }
 

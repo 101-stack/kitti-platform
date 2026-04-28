@@ -18,6 +18,21 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+
+def build_allowed_origins() -> list[str]:
+    origins = {
+        "http://localhost:3000",
+        "http://localhost:3001",
+        "http://127.0.0.1:3000",
+        "http://127.0.0.1:3001",
+    }
+
+    for value in (settings.FRONTEND_URL, settings.NODE_SERVER_URL):
+        if value:
+            origins.add(value.rstrip("/"))
+
+    return sorted(origins)
+
 # ─── App Init ─────────────────────────────────────────────────────────────────
 app = FastAPI(
     title="Kitti Platform API",
@@ -30,7 +45,8 @@ app = FastAPI(
 # ─── CORS ─────────────────────────────────────────────────────────────────────
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.FRONTEND_URL, settings.NODE_SERVER_URL],
+    allow_origins=build_allowed_origins(),
+    allow_origin_regex=r"https://.*\.up\.railway\.app",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

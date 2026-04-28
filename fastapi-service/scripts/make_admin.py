@@ -10,9 +10,10 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import select
 from app.models.models import User
 from app.config import settings
+from app.db_url import normalize_database_url
 
 async def make_admin(username):
-    engine = create_async_engine(settings.DATABASE_URL)
+    engine = create_async_engine(normalize_database_url(settings.DATABASE_URL))
     async_session = sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
     
     async with async_session() as session:

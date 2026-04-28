@@ -32,14 +32,15 @@ export default function RoomPage() {
         router.push('/lobby');
       });
     }
-  }, [user, room]);
+  }, [user, room, roomId, joinRoom, router, setRoom]);
 
   // When game starts, navigate to game table
   useEffect(() => {
-    if (gameId && room?.currentGameId) {
-      router.push(`/game/${gameId}`);
+    const activeGameId = room?.currentGameId || gameId;
+    if (room?.status === 'playing' && activeGameId) {
+      router.push(`/game/${activeGameId}`);
     }
-  }, [gameId, room]);
+  }, [gameId, room, router]);
 
   const isHost = room?.hostId === user?.id;
   const myPlayer = room?.players.find(p => p.userId === user?.id);

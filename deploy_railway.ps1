@@ -1,96 +1,134 @@
-$token = "175f1ca0-89ee-4382-8c44-dd9e4fbaf461"
-$envId = "c6edc515-c3e0-4a8a-82e4-b364d029eff6"
-$projectId = "14ebd829-8804-4876-8775-7bc4eb4d5056"
+param(
+    [string]$Environment = "",
+    [string]$FrontendService = "frontend",
+    [string]$FastAPIService = "fastapi-service",
+    [string]$NodeService = "node-server",
+    [string]$FrontendUrl = "",
+    [string]$FastAPIUrl = "",
+    [string]$NodeUrl = "",
+    [switch]$SkipRedeploy
+)
 
-$frontendId = "ee3be07f-2e78-4c6b-be66-5d18e7f7ef3f"
-$fastapiId  = "23da9b49-f6f2-4a1f-9fcf-3ce719fe35ef"
-$nodeId     = "fdb752d5-1dad-4304-9cae-ff1c539fb73b"
-$redisId    = "redis-service-id-if-exists"
-$postgresId = "postgres-service-id-if-exists"
+$ErrorActionPreference = "Stop"
 
-$frontendUrl = "https://kitti-platform-kitti.up.railway.app"
-$fastapiUrl  = "https://fastapi-kitti.up.railway.app"
-$nodeUrl     = "https://node-server-kitti.up.railway.app"
+function Write-Step($message) {
+    Write-Host ""
+    Write-Host "== $message ==" -ForegroundColor Cyan
+}
 
-# Generate secure keys
-$jwtSecret = -join ((48..57) + (65..90) + (97..122) | Get-Random -Count 32 | % {[char]$_})
-$internalKey = [System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes("kitti-internal-$(Get-Random)"))
-$databaseUrl = "postgresql://neondb_owner:npg_4VxehED6gUMN@ep-wandering-credit-amwebh6s-pooler.c-5.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
-
-$headers = @{ "Authorization" = "Bearer $token"; "Content-Type" = "application/json" }
-
-function Set-Var($serviceId, $name, $value) {
-    $q = 'mutation { variableUpsert(input: { projectId: "' + $projectId + '", environmentId: "' + $envId + '", serviceId: "' + $serviceId + '", name: "' + $name + '", value: "' + $value + '" }) }'
-    $body = @{ query = $q } | ConvertTo-Json -Compress
-    try {
-        Invoke-RestMethod -Uri "https://backboard.railway.app/graphql/v2" -Method Post -Headers $headers -Body $body | Out-Null
-        Write-Host "  [OK] $name"
-    } catch {
-        Write-Host "  [WARN] Failed to set $name : $_"
+function Require-Command($name) {
+    if (-not (Get-Command $name -ErrorAction SilentlyContinue)) {
+        throw "Required command '$name' was not found. Install it first."
     }
 }
 
-Write-Host "=== Setting environment variables ==="
+function Invoke-Railway($arguments) {
+    $output = & railway @arguments 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        throw ($output -join [Environment]::NewLine)
+    }
+    return $output
+}
 
-Write-Host "Frontend:"
-Set-Var $frontendId "NEXT_PUBLIC_NODE_SERVER_URL" $nodeUrl
-Set-Var $frontendId "NEXT_PUBLIC_FASTAPI_URL" $fastapiUrl
+function Set-RailwayVariables($service, $variables) {
+    $args = @("variable", "set")
+    if ($Environment) {
+        $args += @("--environment", $Environment)
+    }
+    $args += @("--service", $service, "--skip-deploys")
+    $args += $variables
 
-Write-Host "FastAPI:"
-Set-Var $fastapiId "DATABASE_URL" $databaseUrl
-Set-Var $fastapiId "FRONTEND_URL" $frontendUrl
-Set-Var $fastapiId "NODE_SERVER_URL" $nodeUrl
-Set-Var $fastapiId "JWT_SECRET" $jwtSecret
-Set-Var $fastapiId "INTERNAL_API_KEY" $internalKey
-Set-Var $fastapiId "NODE_ENV" "production"
+    Write-Host "Setting variables for $service..."
+    Invoke-Railway $args | Out-Null
+}
 
-Write-Host "Node Server:"
-Set-Var $nodeId "FASTAPI_URL" $fastapiUrl
-Set-Var $nodeId "FRONTEND_URL" $frontendUrl
-Set-Var $nodeId "JWT_SECRET" $jwtSecret
-Set-Var $nodeId "INTERNAL_API_KEY" $internalKey
-Set-Var $nodeId "NODE_ENV" "production"
+function Redeploy-Service($service) {
+    $args = @("service", "redeploy", "--service", $service, "--yes")
+    if ($Environment) {
+        $args += @("--environment", $Environment)
+    }
 
-Write-Host ""
-Write-Host "=== Important: Configure on Railway Dashboard ==="
-Write-Host "BEFORE deployment, ensure:"
-Write-Host "  1. PostgreSQL service is created and linked to FastAPI"
-Write-Host "  2. Redis service is created and linked to Node Server & FastAPI"
-Write-Host ""
-Write-Host "Once linked, Railway will auto-set:"
-Write-Host "  - DATABASE_URL (PostgreSQL connection)"
-Write-Host "  - REDIS_URL (Redis connection)"
-Write-Host ""
-Write-Host "For Node Server to use Redis URL instead of individual vars,"
-Write-Host "update the redisService.js to parse REDIS_URL environment variable"
-Write-Host ""
+    Write-Host "Redeploying $service..."
+    Invoke-Railway $args | Out-Null
+}
 
-Write-Host "=== Triggering deployments ==="
+function New-RandomSecret([int]$length = 48) {
+    $chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    -join (1..$length | ForEach-Object { $chars[(Get-Random -Maximum $chars.Length)] })
+}
 
-function Deploy-Service($serviceId, $name) {
-    $q = 'mutation { serviceInstanceRedeploy(environmentId: "' + $envId + '", serviceId: "' + $serviceId + '") }'
-    $body = @{ query = $q } | ConvertTo-Json -Compress
-    try {
-        $r = Invoke-RestMethod -Uri "https://backboard.railway.app/graphql/v2" -Method Post -Headers $headers -Body $body
-        Write-Host "  [OK] Deployed $name"
-    } catch {
-        Write-Host "  [ERROR] Failed to deploy $name : $_"
+function Assert-NotEmpty($value, $name) {
+    if ([string]::IsNullOrWhiteSpace($value)) {
+        throw "$name is required."
     }
 }
 
-Deploy-Service $fastapiId "fastapi"
-Start-Sleep -Seconds 3
-Deploy-Service $nodeId "node-server"
-Start-Sleep -Seconds 3
-Deploy-Service $frontendId "kitti-platform (frontend)"
+Require-Command "railway"
 
+Write-Step "Checking Railway authentication"
+try {
+    Invoke-Railway @("whoami") | Out-Null
+} catch {
+    throw "Railway CLI is not logged in. Run 'railway login' and try again."
+}
+
+Write-Step "Checking project link"
+try {
+    $statusArgs = @("status")
+    if ($Environment) {
+        $statusArgs += @("--environment", $Environment)
+    }
+    Invoke-Railway $statusArgs | Out-Null
+} catch {
+    throw "This folder is not linked to a Railway project. Run 'railway link' and try again."
+}
+
+Assert-NotEmpty $FrontendUrl "FrontendUrl"
+Assert-NotEmpty $FastAPIUrl "FastAPIUrl"
+Assert-NotEmpty $NodeUrl "NodeUrl"
+
+$jwtSecret = New-RandomSecret 64
+$internalApiKey = New-RandomSecret 48
+
+Write-Step "Setting shared application variables"
+Set-RailwayVariables $FrontendService @(
+    "NEXT_PUBLIC_NODE_SERVER_URL=$NodeUrl",
+    "NEXT_PUBLIC_FASTAPI_URL=$FastAPIUrl"
+)
+
+Set-RailwayVariables $FastAPIService @(
+    "FRONTEND_URL=$FrontendUrl",
+    "NODE_SERVER_URL=$NodeUrl",
+    "JWT_SECRET=$jwtSecret",
+    "INTERNAL_API_KEY=$internalApiKey",
+    "NODE_ENV=production"
+)
+
+Set-RailwayVariables $NodeService @(
+    "FASTAPI_URL=$FastAPIUrl",
+    "FRONTEND_URL=$FrontendUrl",
+    "JWT_SECRET=$jwtSecret",
+    "INTERNAL_API_KEY=$internalApiKey",
+    "NODE_ENV=production"
+)
+
+Write-Step "Reminder about managed services"
+Write-Host "PostgreSQL must be linked to $FastAPIService so Railway provides DATABASE_URL."
+Write-Host "Redis must be linked to $FastAPIService and $NodeService so Railway provides REDIS_URL."
+
+if (-not $SkipRedeploy) {
+    Write-Step "Redeploying services"
+    Redeploy-Service $FastAPIService
+    Redeploy-Service $NodeService
+    Redeploy-Service $FrontendService
+}
+
+Write-Step "Done"
+Write-Host "Frontend URL: $FrontendUrl"
+Write-Host "FastAPI URL:  $FastAPIUrl"
+Write-Host "Node URL:     $NodeUrl"
 Write-Host ""
-Write-Host "========================================"
-Write-Host "Deployment triggered!"
-Write-Host "Frontend:    $frontendUrl"
-Write-Host "FastAPI:     $fastapiUrl"
-Write-Host "Node Server: $nodeUrl"
-Write-Host ""
-Write-Host "Monitor deployments at:"
-Write-Host "https://railway.app/project/$projectId"
-Write-Host "========================================"
+Write-Host "Next steps:"
+Write-Host "1. Confirm DATABASE_URL exists on $FastAPIService."
+Write-Host "2. Confirm REDIS_URL exists on $FastAPIService and $NodeService."
+Write-Host "3. Check 'railway service logs -s <service>' if a deploy fails."

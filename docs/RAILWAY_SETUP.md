@@ -1,244 +1,130 @@
 # Railway Deployment Setup Guide
 
-This guide provides step-by-step instructions for deploying Kitti Platform on Railway with proper service linking and environment configuration.
+This project deploys to Railway as three app services plus two managed data services:
 
-## Prerequisites
+- `frontend` for the Next.js app
+- `fastapi-service` for the REST API
+- `node-server` for Socket.IO
+- PostgreSQL for persistent data
+- Redis for live room and game state
 
-- Railway account: https://railway.app
-- Railway CLI installed (optional but recommended)
-- The project's existing Railway services (frontend, fastapi, node-server)
+## Before You Start
 
-## Architecture Overview
+1. Install the Railway CLI.
+2. Run `railway login`.
+3. From the repo root, run `railway link` and connect this folder to the correct Railway project.
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                     Railway Environment                     │
-├─────────────────────────────────────────────────────────────┤
-│                                                               │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐      │
-│  │  PostgreSQL  │  │    Redis     │  │   Frontend   │      │
-│  │  (Database)  │  │  (Cache)     │  │  (Next.js)   │      │
-│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘      │
-│         │                 │                  │              │
-│         └─────────┬───────┴────────┬─────────┘              │
-│                   │                │                        │
-│             ┌─────┴──────┐  ┌──────┴──────┐               │
-│             │   FastAPI   │  │ Node Server │               │
-│             │  (Game API) │  │ (WebSocket) │               │
-│             └─────────────┘  └─────────────┘               │
-│                                                               │
-└─────────────────────────────────────────────────────────────┘
-```
+If `railway status` fails or says your token is invalid, log in again before doing anything else.
 
-## Step 1: Add PostgreSQL Service
+## Create the Railway Services
 
-1. Go to your Railway project dashboard
-2. Click **+ New** and select **Database**
-3. Choose **PostgreSQL**
-4. Wait for the service to be created
-5. Click on the PostgreSQL service
-6. Go to **Variables** tab
-7. Note the `DATABASE_URL` - it will be automatically set
+Create or confirm these services in the Railway dashboard:
 
-## Step 2: Add Redis Service
+- `frontend`
+- `fastapi-service`
+- `node-server`
+- PostgreSQL
+- Redis
 
-1. In your Railway project, click **+ New** and select **Redis**
-2. Choose **Redis** database
-3. Wait for the service to be created
-4. Click on the Redis service
-5. Go to **Variables** tab
-6. Note the `REDIS_URL` - it will be automatically set
+Each app service should point at the matching folder in this repo:
 
-## Step 3: Link Services
+- `frontend` -> `frontend/`
+- `fastapi-service` -> `fastapi-service/`
+- `node-server` -> `node-server/`
 
-### Link PostgreSQL to FastAPI
+Each of those folders already includes its own `Dockerfile` and `railway.json`.
 
-1. Open the **FastAPI** service
-2. Go to **Variables** tab
-3. Click **+ Add Variable**
-4. Choose **DATABASE_URL** from PostgreSQL (it will auto-populate)
-5. Save
+## Link Managed Services
 
-### Link Redis to Node Server
+In the Railway dashboard:
 
-1. Open the **Node Server** service
-2. Go to **Variables** tab
-3. Click **+ Add Variable**
-4. Choose **REDIS_URL** from Redis (it will auto-populate)
-5. Save
+1. Link PostgreSQL to `fastapi-service` so it receives `DATABASE_URL`.
+2. Link Redis to `fastapi-service` so it receives `REDIS_URL`.
+3. Link Redis to `node-server` so it receives `REDIS_URL`.
 
-### Link Redis to FastAPI
+Do not hardcode database or Redis credentials in the repo. Railway should provide them through linked service variables.
 
-1. Open the **FastAPI** service
-2. Go to **Variables** tab
-3. Click **+ Add Variable**
-4. Choose **REDIS_URL** from Redis (it will auto-populate)
-5. Save
+## Set App URLs and Shared Secrets
 
-## Step 4: Set Environment Variables
-
-Run the enhanced deployment script which will automatically set all required variables:
+Run the helper from the repo root after you know the public Railway URLs for your three app services:
 
 ```powershell
-cd c:\Users\ASUS\Desktop\kitti-platform
-powershell -ExecutionPolicy Bypass -File deploy_railway.ps1
+powershell -ExecutionPolicy Bypass -File .\deploy_railway.ps1 `
+  -FrontendUrl "https://your-frontend.up.railway.app" `
+  -FastAPIUrl "https://your-fastapi.up.railway.app" `
+  -NodeUrl "https://your-node-server.up.railway.app"
 ```
 
-This script will set:
+What it does:
 
-### FastAPI Service
-- `FRONTEND_URL` - Points to frontend
-- `NODE_SERVER_URL` - Points to node server
-- `JWT_SECRET` - Generated security key
-- `INTERNAL_API_KEY` - Generated API key
-- `NODE_ENV` - Set to "production"
-- `DATABASE_URL` - Auto-linked from PostgreSQL
-- `REDIS_URL` - Auto-linked from Redis
+- generates a shared `JWT_SECRET`
+- generates a shared `INTERNAL_API_KEY`
+- sets frontend public API URLs
+- sets FastAPI and Node service-to-service URLs
+- redeploys all three services
 
-### Node Server Service
-- `FASTAPI_URL` - Points to FastAPI
-- `FRONTEND_URL` - Points to frontend
-- `JWT_SECRET` - Same as FastAPI
-- `INTERNAL_API_KEY` - Same as FastAPI
-- `NODE_ENV` - Set to "production"
-- `REDIS_URL` - Auto-linked from Redis
+Optional flags:
 
-### Frontend Service
-- `NEXT_PUBLIC_NODE_SERVER_URL` - Public WebSocket URL
-- `NEXT_PUBLIC_FASTAPI_URL` - Public API URL
+- `-Environment "production"` if you use a named Railway environment
+- `-FrontendService`, `-FastAPIService`, `-NodeService` if your Railway service names differ
+- `-SkipRedeploy` if you only want to update variables
 
-## Step 5: Database Migration
+## Deploy the Services
 
-The FastAPI service needs to run migrations on first deployment:
+If the services are already connected to this repo in Railway, pushing to your Git remote may be enough.
 
-### Option A: Using Railway CLI
+If you want to deploy directly from the CLI, run these from the repo root:
 
-```bash
-railway run "cd /app && alembic upgrade head"
+```powershell
+railway up --service frontend --path .\frontend --path-as-root
+railway up --service fastapi-service --path .\fastapi-service --path-as-root
+railway up --service node-server --path .\node-server --path-as-root
 ```
 
-### Option B: Using Railway Dashboard
+## Verify the Deployment
 
-1. Open your Railway project
-2. Go to FastAPI service
-3. Click **Deploy** → **View Logs**
-4. Run migrations manually if needed
+Check these endpoints after deploy:
 
-## Step 6: Verify Deployment
+- Frontend: open the site in a browser
+- FastAPI: `https://your-fastapi.up.railway.app/health`
+- Node server: `https://your-node-server.up.railway.app/health`
 
-After all services are running:
+Then test the real workflow:
 
-1. **Frontend**: https://kitti-platform-kitti.up.railway.app
-2. **FastAPI**: https://fastapi-kitti.up.railway.app
-3. **Node Server**: https://node-server-kitti.up.railway.app
+1. Log in on the frontend.
+2. Create a room.
+3. Join the room.
+4. Start a game.
 
-### Health Checks
+## Troubleshooting
 
-- FastAPI: `GET https://fastapi-kitti.up.railway.app/health`
-- Node Server: `GET https://node-server-kitti.up.railway.app/health`
-- Frontend: Visit the URL and check if login page loads
+`railway login` errors:
+- Run `railway login` again. This repo had an expired local Railway token.
 
-## Common Issues & Troubleshooting
+Frontend loads but API calls fail:
+- Check `NEXT_PUBLIC_FASTAPI_URL` on `frontend`.
+- Check the browser network tab for requests hitting the wrong domain.
 
-### Issue: "Failed to join. Please try again."
+Socket connection fails:
+- Check `NEXT_PUBLIC_NODE_SERVER_URL` on `frontend`.
+- Check `FRONTEND_URL` on `node-server`.
+- Check `REDIS_URL` exists on `node-server`.
 
-**Possible Causes:**
-- Redis connection failed
-- FastAPI can't connect to database
-- Inter-service communication broken
-- JWT token validation failed
+FastAPI boots but database actions fail:
+- Check `DATABASE_URL` exists on `fastapi-service`.
+- Confirm PostgreSQL is linked to `fastapi-service`.
 
-**Solutions:**
-1. Check service logs in Railway dashboard
-2. Verify all environment variables are set
-3. Ensure services are linked (PostgreSQL → FastAPI, Redis → Node+FastAPI)
-4. Check that `JWT_SECRET` is identical on FastAPI and Node Server
-5. Verify CORS settings in Node Server index.js match `FRONTEND_URL`
+"Failed to join" or room state bugs:
+- Confirm `REDIS_URL` exists on both `fastapi-service` and `node-server`.
+- Confirm `JWT_SECRET` matches between `fastapi-service` and `node-server`.
+- Confirm `INTERNAL_API_KEY` matches between `fastapi-service` and `node-server`.
 
-### Issue: "Database connection error"
+## Useful Commands
 
-**Solution:**
-- Verify `DATABASE_URL` is set in FastAPI
-- Check PostgreSQL service is running
-- Run migrations: `alembic upgrade head`
-
-### Issue: "Redis connection failed"
-
-**Solution:**
-- Verify `REDIS_URL` is set in both Node Server and FastAPI
-- Check Redis service is running
-- Note: `REDIS_URL` supersedes individual `REDIS_HOST`/`REDIS_PORT` variables
-
-### Issue: WebSocket connection fails
-
-**Solution:**
-- Verify Node Server service is running
-- Check `NEXT_PUBLIC_NODE_SERVER_URL` is correct in frontend
-- Ensure CORS origin in Node Server includes frontend URL
-- Check WebSocket transport is enabled (not blocked by proxy)
-
-## Environment Variable Reference
-
-### Automatically Provided by Railway
-
-When you link services, these are auto-set:
-- `DATABASE_URL` (from PostgreSQL)
-- `REDIS_URL` (from Redis)
-
-### Must Be Set Manually or by Script
-
+```powershell
+railway status
+railway service list
+railway service logs -s frontend
+railway service logs -s fastapi-service
+railway service logs -s node-server
 ```
-JWT_SECRET=<generated>
-INTERNAL_API_KEY=<generated>
-FRONTEND_URL=https://kitti-platform-kitti.up.railway.app
-NODE_SERVER_URL=https://node-server-kitti.up.railway.app
-NEXT_PUBLIC_NODE_SERVER_URL=https://node-server-kitti.up.railway.app
-NEXT_PUBLIC_FASTAPI_URL=https://fastapi-kitti.up.railway.app
-```
-
-## Monitoring & Debugging
-
-1. **View Logs**: Click on any service → **Logs** tab
-2. **Check Variables**: Service → **Variables** tab
-3. **Check Deployments**: Service → **Deployments** tab
-4. **Monitor Resources**: Project → **Metrics** tab
-
-## Security Notes
-
-1. **JWT_SECRET** - Keep this secret! Should be different in each environment
-2. **INTERNAL_API_KEY** - Used for service-to-service communication
-3. **DATABASE_URL** - Contains credentials, keep secure
-4. Never commit `.env` files with real credentials
-
-## Deployment Checklist
-
-- [ ] PostgreSQL service created and running
-- [ ] Redis service created and running
-- [ ] PostgreSQL linked to FastAPI (DATABASE_URL)
-- [ ] Redis linked to Node Server (REDIS_URL)
-- [ ] Redis linked to FastAPI (REDIS_URL)
-- [ ] All environment variables set (via script or manually)
-- [ ] Database migrations run
-- [ ] FastAPI health check passes
-- [ ] Node Server health check passes
-- [ ] Frontend loads without errors
-- [ ] Can login successfully
-- [ ] Can create and join game rooms
-
-## Scaling in Production
-
-For production scaling:
-
-1. **Database**: Enable PostgreSQL backups and replication
-2. **Redis**: Consider Redis with persistence
-3. **Node Server**: Use sticky sessions for Socket.IO
-4. **Frontend**: Enable Vercel or Railway CDN caching
-5. **API Rate Limiting**: Configure rate limits appropriately
-
-## Support
-
-For issues, check:
-1. Railway service logs
-2. Browser developer console (Network & Console tabs)
-3. This troubleshooting guide
-4. Project README.md

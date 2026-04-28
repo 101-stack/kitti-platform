@@ -505,3 +505,45 @@
 2026-04-27 10:38:45 [error]: Redis error: . Using in-memory fallback.
 2026-04-27 10:38:45 [warn]: Redis reconnecting... attempt 3, delay: 150ms
 2026-04-27 10:38:45 [error]: Redis error: . Using in-memory fallback.
+2026-04-29 05:14:05 [info]: Redis: Using individual host/port/password configuration
+2026-04-29 05:14:06 [info]: 🎴 Kitti Node Server running on port 4000
+2026-04-29 05:14:06 [info]: Environment: development
+2026-04-29 05:14:06 [error]: Redis error: . Using in-memory fallback.
+2026-04-29 05:14:06 [warn]: Redis reconnecting... attempt 1, delay: 50ms
+2026-04-29 05:14:06 [error]: Redis error: . Using in-memory fallback.
+2026-04-29 05:14:06 [warn]: Redis reconnecting... attempt 2, delay: 100ms
+2026-04-29 05:14:06 [error]: Redis error: . Using in-memory fallback.
+2026-04-29 05:14:06 [warn]: Redis reconnecting... attempt 3, delay: 150ms
+2026-04-29 05:14:06 [error]: Redis error: . Using in-memory fallback.
+2026-04-29 05:15:01 [warn]: Socket auth failed: invalid signature
+2026-04-29 05:15:57 [info]: Player connected: fjhg (253104c8-f4a1-4ec1-9a80-730c6059a904) | Socket: xRfRpoELn66Gruq3AAAE
+2026-04-29 05:16:02 [info]: Room created: 0E9AF6BB by fjhg
+2026-04-29 05:16:02 [info]: Player disconnecting: fjhg | Reason: client namespace disconnect
+2026-04-29 05:16:02 [info]: Player disconnected: fjhg | Reason: client namespace disconnect
+2026-04-29 05:16:02 [info]: Player connected: fjhg (253104c8-f4a1-4ec1-9a80-730c6059a904) | Socket: ekaRjSB3U_pJoe2AAAAG
+2026-04-29 05:16:04 [info]: Player disconnecting: fjhg | Reason: client namespace disconnect
+2026-04-29 05:16:04 [info]: Player disconnected: fjhg | Reason: client namespace disconnect
+2026-04-29 05:16:04 [info]: Player connected: fjhg (253104c8-f4a1-4ec1-9a80-730c6059a904) | Socket: uFWPeM47f9gHEjI9AAAJ
+2026-04-29 05:16:12 [error]: FastAPI error: timeout of 5000ms exceeded
+2026-04-29 05:17:17 [info]: Game 72a3b054-61e8-4de7-a2db-e80d961de1e8 started in room 0E9AF6BB with 2 players (1 bots)
+2026-04-29 05:17:34 [info]: Player disconnecting: fjhg | Reason: transport close
+2026-04-29 05:17:34 [info]: Player disconnected: fjhg | Reason: transport close
+2026-04-29 05:17:35 [info]: Player connected: fjhg (253104c8-f4a1-4ec1-9a80-730c6059a904) | Socket: 4R0_73OZR5xrbYGfAAAL
+2026-04-29 05:17:35 [info]: fjhg joined room 0E9AF6BB
+2026-04-29 05:17:35 [info]: Player disconnecting: fjhg | Reason: client namespace disconnect
+2026-04-29 05:17:35 [info]: Player disconnected: fjhg | Reason: client namespace disconnect
+2026-04-29 05:17:35 [info]: Player connected: fjhg (253104c8-f4a1-4ec1-9a80-730c6059a904) | Socket: DdQVYedbNI2RJ61fAAAN
+2026-04-29 05:17:37 [info]: Player disconnecting: fjhg | Reason: client namespace disconnect
+2026-04-29 05:17:37 [info]: Player disconnected: fjhg | Reason: client namespace disconnect
+2026-04-29 05:17:37 [info]: Player connected: fjhg (253104c8-f4a1-4ec1-9a80-730c6059a904) | Socket: -lFPO2wiV3640HWGAAAP
+2026-04-29 05:18:22 [info]: Submit timeout for game 72a3b054-61e8-4de7-a2db-e80d961de1e8. Auto-folding 1 players.
+2026-04-29 05:18:24 [error]: FastAPI error: (sqlalchemy.dialects.postgresql.asyncpg.IntegrityError) <class 'asyncpg.exceptions.ForeignKeyViolationError'>: insert or update on table "transactions" violates foreign key constraint "transactions_match_id_fkey"
+DETAIL:  Key (match_id)=(72a3b054-61e8-4de7-a2db-e80d961de1e8) is not present in table "matches".
+[SQL: INSERT INTO transactions (id, user_id, match_id, amount, type, description, balance_before, balance_after) VALUES ($1::UUID, $2::UUID, $3::UUID, $4::INTEGER, $5::transactiontype, $6::VARCHAR, $7::INTEGER, $8::INTEGER) RETURNING transactions.created_at]
+[parameters: (UUID('7009b415-7fad-48eb-b169-90fa8c43274a'), UUID('253104c8-f4a1-4ec1-9a80-730c6059a904'), UUID('72a3b054-61e8-4de7-a2db-e80d961de1e8'), 100, 'refund', 'Game winnings', 800, 900)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2026-04-29 05:18:24 [error]: timeout refund error: FastAPI error: (sqlalchemy.dialects.postgresql.asyncpg.IntegrityError) <class 'asyncpg.exceptions.ForeignKeyViolationError'>: insert or update on table "transactions" violates foreign key constraint "transactions_match_id_fkey"
+DETAIL:  Key (match_id)=(72a3b054-61e8-4de7-a2db-e80d961de1e8) is not present in table "matches".
+[SQL: INSERT INTO transactions (id, user_id, match_id, amount, type, description, balance_before, balance_after) VALUES ($1::UUID, $2::UUID, $3::UUID, $4::INTEGER, $5::transactiontype, $6::VARCHAR, $7::INTEGER, $8::INTEGER) RETURNING transactions.created_at]
+[parameters: (UUID('7009b415-7fad-48eb-b169-90fa8c43274a'), UUID('253104c8-f4a1-4ec1-9a80-730c6059a904'), UUID('72a3b054-61e8-4de7-a2db-e80d961de1e8'), 100, 'refund', 'Game winnings', 800, 900)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)

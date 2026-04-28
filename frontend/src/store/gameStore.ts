@@ -16,6 +16,29 @@ interface AuthState {
   updateCoins: (coins: number) => void;
 }
 
+const authStorage = {
+  getItem: (name: string) => {
+    if (typeof window === 'undefined') return null;
+    const raw = window.localStorage.getItem(name);
+    if (!raw) return null;
+
+    try {
+      return JSON.parse(raw);
+    } catch {
+      window.localStorage.removeItem(name);
+      return null;
+    }
+  },
+  setItem: (name: string, value: unknown) => {
+    if (typeof window === 'undefined') return;
+    window.localStorage.setItem(name, JSON.stringify(value));
+  },
+  removeItem: (name: string) => {
+    if (typeof window === 'undefined') return;
+    window.localStorage.removeItem(name);
+  },
+};
+
 export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
@@ -31,6 +54,7 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: 'kitti-auth',
+      storage: authStorage,
       partialize: (state) => ({ token: state.token, user: state.user, isAuthenticated: state.isAuthenticated }),
     }
   )

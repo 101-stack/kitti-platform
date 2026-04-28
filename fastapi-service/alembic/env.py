@@ -11,6 +11,7 @@ from alembic import context
 from app.database import Base
 from app.models.models import *
 from app.config import settings
+from app.db_url import normalize_database_url
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -25,10 +26,7 @@ target_metadata = Base.metadata
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode."""
-    url = settings.DATABASE_URL
-    # Convert postgresql:// to postgresql+asyncpg:// for async support
-    if url.startswith("postgresql://"):
-        url = url.replace("postgresql://", "postgresql+asyncpg://", 1)
+    url = normalize_database_url(settings.DATABASE_URL)
     
     context.configure(
         url=url,
@@ -48,11 +46,7 @@ def do_run_migrations(connection: Connection) -> None:
 
 async def run_migrations_online() -> None:
     """Run migrations in 'online' mode."""
-    # Use settings.DATABASE_URL instead of ini file URL
-    url = settings.DATABASE_URL
-    # Convert postgresql:// to postgresql+asyncpg:// for async support
-    if url.startswith("postgresql://"):
-        url = url.replace("postgresql://", "postgresql+asyncpg://", 1)
+    url = normalize_database_url(settings.DATABASE_URL)
     
     configuration = config.get_section(config.config_ini_section)
     configuration["sqlalchemy.url"] = url

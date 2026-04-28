@@ -12,19 +12,16 @@ const ENTRY_FEE = parseInt(process.env.GAME_ENTRY_FEE) || 100;
 const MAX_PLAYERS = 5;
 
 module.exports = (io, socket) => {
-  const { userId, username, coins } = socket.user;
+  const { userId, username } = socket.user;
 
   // ── CREATE ROOM ─────────────────────────────────────────────────────────────
   socket.on('create_room', async (data, callback) => {
     try {
       const { maxPlayers = 2, enable235Rule = false, entryFee = ENTRY_FEE } = data || {};
 
-      if (maxPlayers < 1 || maxPlayers > MAX_PLAYERS) {
-        return callback?.({ success: false, error: 'Max players must be 1–5.' });
+      if (maxPlayers < 2 || maxPlayers > MAX_PLAYERS) {
+        return callback?.({ success: false, error: 'Max players must be 2–5.' });
       }
-
-      // Deduct entry fee via FastAPI
-      await fastapiService.processTransaction(userId, entryFee, 'debit', null);
 
       const roomId = uuidv4().slice(0, 8).toUpperCase(); // Short room code e.g. "A3F9B2C1"
 
@@ -60,7 +57,7 @@ module.exports = (io, socket) => {
       // Check if player is already in the room (reconnecting)
       const existingPlayer = roomState?.players?.find(p => p.userId === userId);
       
-      const validation = validateJoinRoom(roomState, userId, roomState?.entryFee, coins, !!existingPlayer);
+      const validation = validateJoinRoom(roomState, userId, !!existingPlayer);
 
       if (!validation.valid) {
         return callback?.({ success: false, error: validation.error });
@@ -70,8 +67,6 @@ module.exports = (io, socket) => {
         // Reconnecting: just update status, no entry fee charged
         existingPlayer.isConnected = true;
       } else {
-        // New player joining: deduct entry fee and add to room
-        await fastapiService.processTransaction(userId, roomState.entryFee, 'debit', null);
         roomState.players.push({ userId, username, isReady: false, isConnected: true });
       }
       

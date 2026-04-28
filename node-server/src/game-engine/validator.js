@@ -69,7 +69,7 @@ const validatePlayerInRoom = (roomState, userId) => {
 /**
  * Validate room join conditions
  */
-const validateJoinRoom = (roomState, userId, entryFee, userCoins, isReconnecting = false) => {
+const validateJoinRoom = (roomState, userId, isReconnecting = false) => {
   if (!roomState) return { valid: false, error: 'Room not found.' };
   
   if (isReconnecting) {
@@ -79,7 +79,6 @@ const validateJoinRoom = (roomState, userId, entryFee, userCoins, isReconnecting
 
   if (roomState.status !== 'waiting') return { valid: false, error: 'Game already in progress.' };
   if (roomState.players.length >= roomState.maxPlayers) return { valid: false, error: 'Room is full.' };
-  if (userCoins < entryFee) return { valid: false, error: 'Insufficient coins for entry fee.' };
   return { valid: true };
 };
 
