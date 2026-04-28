@@ -2,15 +2,29 @@
  * Redis Service
  * Centralized Redis client with helper methods for game state management
  * Uses ioredis for cluster/sentinel support
+ * Supports both individual config vars and REDIS_URL (Railway format)
  */
 const Redis = require('ioredis');
 const logger = require('../utils/logger');
 
-const redisClient = new Redis({
-  host: process.env.REDIS_HOST || 'localhost',
-  port: parseInt(process.env.REDIS_PORT) || 6379,
-  password: process.env.REDIS_PASSWORD || undefined,
-  db: parseInt(process.env.REDIS_DB) || 0,
+// Parse Redis connection from REDIS_URL (Railway) or individual env vars
+let redisConfig;
+if (process.env.REDIS_URL) {
+  // Railway format: redis://:password@host:port/db
+  redisConfig = process.env.REDIS_URL;
+  logger.info('Redis: Using REDIS_URL from environment (Railway)');
+} else {
+  // Local development format
+  redisConfig = {
+    host: process.env.REDIS_HOST || 'localhost',
+    port: parseInt(process.env.REDIS_PORT) || 6379,
+    password: process.env.REDIS_PASSWORD || undefined,
+    db: parseInt(process.env.REDIS_DB) || 0,
+  };
+  logger.info('Redis: Using individual host/port/password configuration');
+}
+
+const redisClient = new Redis(redisConfig, {
   retryStrategy: (times) => {
     const delay = Math.min(times * 50, 2000);
     if (times > 3) return null; // Stop retrying after 3 attempts to use fallback

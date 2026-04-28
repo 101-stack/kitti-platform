@@ -188,3 +188,7 @@
 2026-04-27 10:02:17 [error]: create_room error: FastAPI error: Insufficient coins
 2026-04-27 10:03:41 [error]: FastAPI error: Insufficient coins
 2026-04-27 10:03:41 [error]: create_room error: FastAPI error: Insufficient coins
+2026-04-27 10:38:44 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 10:38:45 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 10:38:45 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 10:38:45 [error]: Redis error: . Using in-memory fallback.

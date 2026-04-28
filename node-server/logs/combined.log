@@ -496,3 +496,12 @@
 2026-04-27 10:03:54 [info]: Player connected: abc (2dca45be-401e-4081-954b-8cdefb69c689) | Socket: jQZ52AvcTTl42iX_AAAH
 2026-04-27 10:04:04 [info]: Player disconnecting: abc | Reason: transport close
 2026-04-27 10:04:04 [info]: Player disconnected: abc | Reason: transport close
+2026-04-27 10:38:44 [info]: 🎴 Kitti Node Server running on port 4000
+2026-04-27 10:38:44 [info]: Environment: development
+2026-04-27 10:38:44 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 10:38:44 [warn]: Redis reconnecting... attempt 1, delay: 50ms
+2026-04-27 10:38:45 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 10:38:45 [warn]: Redis reconnecting... attempt 2, delay: 100ms
+2026-04-27 10:38:45 [error]: Redis error: . Using in-memory fallback.
+2026-04-27 10:38:45 [warn]: Redis reconnecting... attempt 3, delay: 150ms
+2026-04-27 10:38:45 [error]: Redis error: . Using in-memory fallback.
