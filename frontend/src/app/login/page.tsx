@@ -35,7 +35,14 @@ export default function LoginPage() {
       });
       router.push('/lobby');
     } catch (err: any) {
-      toast.error(err.response?.data?.detail || 'Failed to join. Please try again.');
+      let errorMsg = 'Failed to join. Please try again.';
+      const detail = err.response?.data?.detail;
+      if (typeof detail === 'string') {
+        errorMsg = detail;
+      } else if (Array.isArray(detail)) {
+        errorMsg = detail[0]?.msg || errorMsg;
+      }
+      toast.error(errorMsg);
       setStep('name');
     } finally {
       setLoading(false);
