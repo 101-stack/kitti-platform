@@ -159,7 +159,7 @@ export default function GamePage() {
         </div>
       </div>
 
-      <div className="flex-1 relative flex flex-col">
+      <div className="flex-1 relative flex flex-col overflow-y-auto custom-scrollbar">
         {/* Opponents Section */}
         <div className="flex flex-wrap justify-center gap-2 sm:gap-4 p-2 sm:p-4">
           {opponents.map(p => (

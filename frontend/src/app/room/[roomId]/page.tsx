@@ -103,7 +103,7 @@ export default function RoomPage() {
         <div className="w-24" />
       </header>
 
-      <div className="flex-1 max-w-xl mx-auto w-full p-4 sm:p-8 flex flex-col gap-8 custom-scrollbar">
+      <div className="flex-1 max-w-xl mx-auto w-full p-4 sm:p-8 flex flex-col gap-8 overflow-y-auto custom-scrollbar pb-12">
         {/* Room Code - VIP Style */}
         <motion.div
           className="glass-panel gold-border p-10 rounded-3xl text-center relative overflow-hidden"
