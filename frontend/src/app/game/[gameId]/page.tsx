@@ -27,27 +27,42 @@ export default function GamePage() {
   const [phase, setPhase] = useState<'dealing' | 'arranging' | 'waiting' | 'result'>('dealing');
 
   useEffect(() => {
-    if (!gameId) return;
-
-    const socketApi = getSocket(token);
-    // Connect and join
-    socketApi.connect();
+    if (!gameId || !token) return;
     
-    // Request current state
-    socketApi.emit('reconnect_game', { gameId }, (res: any) => {
-      if (res.success) {
-        setGameState(res.gameState);
-        setMyCards(res.myCards || []);
-        if (res.gameState.status === 'complete') {
-          setPhase('result');
+    const socket = getSocket(token);
+    
+    const fetchState = () => {
+      socket.emit('reconnect_game', { gameId }, (res: any) => {
+        if (res?.success) {
+          setGameState(res.gameState);
+          if (res.myCards) setMyCards(res.myCards);
+          if (res.gameState.status === 'complete') {
+            setPhase('result');
+          } else {
+            setPhase(res.gameState.players.find((p: any) => p.userId === user?.id)?.hasSubmitted ? 'waiting' : 'arranging');
+          }
         } else {
-          setPhase(res.gameState.players.find((p: any) => p.userId === user?.id)?.hasSubmitted ? 'waiting' : 'arranging');
+          toast.error('Game not found');
+          router.push('/lobby');
         }
-      } else {
-        toast.error('Game not found');
-        router.push('/lobby');
-      }
-    });
+      });
+    };
+
+    // Fetch immediately on mount
+    if (socket.connected) {
+      fetchState();
+    }
+
+    // Fetch again if socket reconnects
+    socket.on('connect', fetchState);
+    return () => {
+      socket.off('connect', fetchState);
+    };
+  }, [gameId, token]);
+
+  useEffect(() => {
+    if (!token) return;
+    const socket = getSocket(token);
 
     // Listen for updates
     const onPlayerSubmitted = (data: any) => {
@@ -64,14 +79,14 @@ export default function GamePage() {
       setPhase('result');
     };
 
-    socketApi.on('player_submitted', onPlayerSubmitted);
-    socketApi.on('game_result', onGameResult);
+    socket.on('player_submitted', onPlayerSubmitted);
+    socket.on('game_result', onGameResult);
 
     return () => {
-      socketApi.off('player_submitted', onPlayerSubmitted);
-      socketApi.off('game_result', onGameResult);
+      socket.off('player_submitted', onPlayerSubmitted);
+      socket.off('game_result', onGameResult);
     };
-  }, [gameId, token]);
+  }, [gameState, token, setGameState, setGameResult]);
 
   const handleSubmit = async () => {
     if (Object.keys(cardPlacement).length !== 9) {

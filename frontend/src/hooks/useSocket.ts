@@ -111,6 +111,14 @@ export const useSocket = () => {
 
     socket.on('connect', () => {
       console.log('Socket connected:', socket.id);
+      const currentRoom = useRoomStore.getState().room;
+      if (currentRoom) {
+        socket.emit('join_room', { roomId: currentRoom.roomId }, (res: any) => {
+          if (res?.success && res.roomState) {
+            setRoom(res.roomState);
+          }
+        });
+      }
     });
 
     socket.on('disconnect', (reason: string) => {
@@ -136,7 +144,6 @@ export const useSocket = () => {
       socket.off('game_result');
       socket.off('game_cancelled');
       socket.off('error');
-      disconnectSocket();
       socketRef.current = null;
     };
   }, [token, user]);
