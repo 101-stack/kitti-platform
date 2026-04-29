@@ -86,7 +86,7 @@ export default function RoomPage() {
   const emptySlots = Array(room.maxPlayers - room.players.length).fill(null);
 
   return (
-    <div className="min-h-dvh felt-table flex flex-col">
+    <div className="h-dvh w-full felt-table flex flex-col overflow-hidden">
       {/* Header */}
       <header className="glass-panel sticky top-0 z-50 border-b border-yellow-900/20 px-6 py-4 flex items-center justify-between">
         <button onClick={handleLeave}

@@ -141,7 +141,7 @@ export default function GamePage() {
   const submittedCount = players.filter(p => p.hasSubmitted).length;
 
   return (
-    <div className="min-h-screen felt-table text-white overflow-hidden flex flex-col">
+    <div className="h-dvh w-full felt-table text-white overflow-hidden flex flex-col">
       {/* Header */}
       <div className="glass-panel-light p-4 flex justify-between items-center z-20">
         <div className="flex items-center gap-4">

@@ -72,7 +72,7 @@ export default function LobbyPage() {
   if (!user) return null;
 
   return (
-    <div className="min-h-dvh felt-table flex flex-col">
+    <div className="h-dvh w-full felt-table flex flex-col overflow-hidden">
       {/* Header */}
       <header className="glass-panel sticky top-0 z-50 border-b border-yellow-900/20 px-4 sm:px-8 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
