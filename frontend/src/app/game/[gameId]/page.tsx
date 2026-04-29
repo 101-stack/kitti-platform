@@ -161,7 +161,7 @@ export default function GamePage() {
 
       <div className="flex-1 relative flex flex-col">
         {/* Opponents Section */}
-        <div className="flex justify-center gap-4 p-4">
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-4 p-2 sm:p-4">
           {opponents.map(p => (
             <OpponentPanel key={p.userId} player={p} />
           ))}
